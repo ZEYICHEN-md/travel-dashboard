@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -7,6 +7,7 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js"
             onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js';document.head.appendChild(s);"></script>
     <script src="data.js"></script>
+    <script src="i18n.js"></script>
     <style>
         :root {
             --bg: #f5f6f8;
@@ -61,6 +62,32 @@
         .header .subtitle {
             font-size: 13px;
             color: var(--text-secondary);
+        }
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        .lang-toggle {
+            padding: 8px 14px;
+            border-radius: 7px;
+            border: 1px solid var(--border);
+            background: #fff;
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .lang-toggle:hover {
+            background: #f0f1f3;
         }
 
         /* Tabs */
@@ -208,12 +235,6 @@
             background: #1d4ed8;
             border-color: #1d4ed8;
         }
-        .header-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-        }
         .section-header {
             display: flex;
             align-items: center;
@@ -302,48 +323,51 @@
         <div class="header">
             <div class="header-row">
                 <div>
-                    <h1>2026年旅游行业数据看板</h1>
-                    <div class="subtitle">数据口径：同比2025年变化率 | 来源：STR、民航局、三大航、国铁、航班管家、飞常准</div>
+                    <h1 id="i18n-title">2026年旅游行业数据看板</h1>
+                    <div class="subtitle" id="i18n-subtitle">数据口径：同比2025年变化率 | 来源：STR、民航局、三大航、国铁、航班管家、飞常准</div>
                 </div>
-                <button class="download-all" onclick="downloadAllCharts()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    下载全部图表
-                </button>
+                <div class="header-actions">
+                    <button type="button" class="lang-toggle" id="lang-toggle" onclick="toggleLang()">EN</button>
+                    <button class="download-all" onclick="downloadAllCharts()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <span id="i18n-download-all">下载全部图表</span>
+                    </button>
+                </div>
             </div>
         </div>
 
         <!-- Tabs -->
         <div class="tabs">
-            <button class="tab active" onclick="switchView('weekly')">周度趋势</button>
-            <button class="tab" onclick="switchView('monthly')">月度趋势</button>
-            <button class="tab" onclick="switchView('quarterly')">季度总览</button>
+            <button class="tab active" id="i18n-tab-weekly" onclick="switchView('weekly')">周度趋势</button>
+            <button class="tab" id="i18n-tab-monthly" onclick="switchView('monthly')">月度趋势</button>
+            <button class="tab" id="i18n-tab-quarterly" onclick="switchView('quarterly')">季度总览</button>
         </div>
 
         <!-- ==================== WEEKLY VIEW ==================== -->
         <div id="view-weekly" class="view active">
             <div class="kpi-row">
                 <div class="kpi-card">
-                    <div class="kpi-label">酒店入住率（最新周）</div>
+                    <div class="kpi-label" id="i18n-kpi-occ">酒店入住率（最新周）</div>
                     <div class="kpi-value" id="kpi-occ"></div>
                     <div class="kpi-sub" id="kpi-occ-week"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">酒店 ADR（最新周）</div>
+                    <div class="kpi-label" id="i18n-kpi-adr">酒店 ADR（最新周）</div>
                     <div class="kpi-value" id="kpi-adr"></div>
                     <div class="kpi-sub" id="kpi-adr-week"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">酒店 RevPAR（最新周）</div>
+                    <div class="kpi-label" id="i18n-kpi-revpar">酒店 RevPAR（最新周）</div>
                     <div class="kpi-value" id="kpi-revpar"></div>
                     <div class="kpi-sub" id="kpi-revpar-week"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">机票客运量（最新周）</div>
+                    <div class="kpi-label" id="i18n-kpi-pax">机票客运量（最新周）</div>
                     <div class="kpi-value" id="kpi-pax"></div>
                     <div class="kpi-sub" id="kpi-pax-week"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">机票票价（最新周）</div>
+                    <div class="kpi-label" id="i18n-kpi-ticket">机票票价（最新周）</div>
                     <div class="kpi-value" id="kpi-ticket"></div>
                     <div class="kpi-sub" id="kpi-ticket-week"></div>
                 </div>
@@ -352,20 +376,20 @@
             <div class="chart-grid">
                 <div class="chart-card">
                     <div class="chart-header">
-                    <div class="chart-title">酒店周度指标（入住率 / ADR / RevPAR 同比）</div>
+                    <div class="chart-title" id="i18n-chart-weekly-hotel">酒店周度指标（入住率 / ADR / RevPAR 同比）</div>
                     <button class="chart-download" onclick="downloadChart('weekly-hotel')">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        下载图片
+                        <span class="dl-text">下载图片</span>
                     </button>
                 </div>
                     <div class="chart-container" id="weekly-hotel"></div>
                 </div>
                 <div class="chart-card">
                     <div class="chart-header">
-                    <div class="chart-title">航空周度指标（客运量 / 票价 / 航班量 同比）</div>
+                    <div class="chart-title" id="i18n-chart-weekly-aviation">航空周度指标（客运量 / 票价 / 航班量 同比）</div>
                     <button class="chart-download" onclick="downloadChart('weekly-aviation')">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        下载图片
+                        <span class="dl-text">下载图片</span>
                     </button>
                 </div>
                     <div class="chart-container" id="weekly-aviation"></div>
@@ -375,71 +399,71 @@
 
         <!-- ==================== MONTHLY VIEW ==================== -->
         <div id="view-monthly" class="view">
-            <div class="kpi-row">
+            <div class="kpi-row" id="monthly-kpi-row">
                 <div class="kpi-card">
-                    <div class="kpi-label">酒店 RevPAR（5月）</div>
-                    <div class="kpi-value up">+0.8%</div>
-                    <div class="kpi-sub">前月：4月 +5.7%</div>
+                    <div class="kpi-label" id="m-kpi-0-label"></div>
+                    <div class="kpi-value" id="m-kpi-0-value"></div>
+                    <div class="kpi-sub" id="m-kpi-0-sub"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">国内航空客运量（5月 · 民航局）</div>
-                    <div class="kpi-value down">-7.81%</div>
-                    <div class="kpi-sub">前月：4月 -0.24%</div>
+                    <div class="kpi-label" id="m-kpi-1-label"></div>
+                    <div class="kpi-value" id="m-kpi-1-value"></div>
+                    <div class="kpi-sub" id="m-kpi-1-sub"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">铁路客运量（6月）</div>
-                    <div class="kpi-value up">+0.37%</div>
-                    <div class="kpi-sub">前月：5月 +1.9%</div>
+                    <div class="kpi-label" id="m-kpi-2-label"></div>
+                    <div class="kpi-value" id="m-kpi-2-value"></div>
+                    <div class="kpi-sub" id="m-kpi-2-sub"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">国际航线客运量（5月 · 三大航）</div>
-                    <div class="kpi-value up">+1.07%</div>
-                    <div class="kpi-sub">出入境同比</div>
+                    <div class="kpi-label" id="m-kpi-3-label"></div>
+                    <div class="kpi-value" id="m-kpi-3-value"></div>
+                    <div class="kpi-sub" id="m-kpi-3-sub"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">国际航班运力（5月 · vs 2019）</div>
-                    <div class="kpi-value down">-15.0%</div>
-                    <div class="kpi-sub">航班管家数据</div>
+                    <div class="kpi-label" id="m-kpi-4-label"></div>
+                    <div class="kpi-value" id="m-kpi-4-value"></div>
+                    <div class="kpi-sub" id="m-kpi-4-sub"></div>
                 </div>
             </div>
 
             <div class="chart-grid">
                 <div class="chart-card">
                     <div class="chart-header">
-                    <div class="chart-title">酒店月度指标（入住率 / ADR / RevPAR 同比）</div>
+                    <div class="chart-title" id="i18n-chart-monthly-hotel">酒店月度指标（入住率 / ADR / RevPAR 同比）</div>
                     <button class="chart-download" onclick="downloadChart('monthly-hotel')">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        下载图片
+                        <span class="dl-text">下载图片</span>
                     </button>
                 </div>
                     <div class="chart-container tall" id="monthly-hotel"></div>
                 </div>
                 <div class="chart-card">
                     <div class="chart-header">
-                    <div class="chart-title">国内航空客运量月度同比（民航局 vs 三大航）</div>
+                    <div class="chart-title" id="i18n-chart-monthly-dom-av">国内航空客运量月度同比（民航局 vs 三大航）</div>
                     <button class="chart-download" onclick="downloadChart('monthly-domestic-aviation')">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        下载图片
+                        <span class="dl-text">下载图片</span>
                     </button>
                 </div>
                     <div class="chart-container tall" id="monthly-domestic-aviation"></div>
                 </div>
                 <div class="chart-card">
                     <div class="chart-header">
-                    <div class="chart-title">铁路客运量月度同比</div>
+                    <div class="chart-title" id="i18n-chart-monthly-railway">铁路客运量月度同比</div>
                     <button class="chart-download" onclick="downloadChart('monthly-railway')">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        下载图片
+                        <span class="dl-text">下载图片</span>
                     </button>
                 </div>
                     <div class="chart-container" id="monthly-railway"></div>
                 </div>
                 <div class="chart-card">
                     <div class="chart-header">
-                    <div class="chart-title">国际航空客运量 & 运力月度同比</div>
+                    <div class="chart-title" id="i18n-chart-monthly-intl">国际航空客运量 & 运力月度同比</div>
                     <button class="chart-download" onclick="downloadChart('monthly-international')">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        下载图片
+                        <span class="dl-text">下载图片</span>
                     </button>
                 </div>
                     <div class="chart-container" id="monthly-international"></div>
@@ -449,41 +473,41 @@
 
         <!-- ==================== QUARTERLY VIEW ==================== -->
         <div id="view-quarterly" class="view">
-            <div class="kpi-row">
+            <div class="kpi-row" id="quarterly-kpi-row">
                 <div class="kpi-card">
-                    <div class="kpi-label">酒店 RevPAR（Q1）</div>
-                    <div class="kpi-value up">+4.8%</div>
-                    <div class="kpi-sub">入住率 +1.0% &nbsp;|&nbsp; ADR +3.8%</div>
+                    <div class="kpi-label" id="q-kpi-0-label"></div>
+                    <div class="kpi-value" id="q-kpi-0-value"></div>
+                    <div class="kpi-sub" id="q-kpi-0-sub"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">国内航空客运量（Q1 · 民航局）</div>
-                    <div class="kpi-value up">+5.48%</div>
-                    <div class="kpi-sub">三大航 +5.51%</div>
+                    <div class="kpi-label" id="q-kpi-1-label"></div>
+                    <div class="kpi-value" id="q-kpi-1-value"></div>
+                    <div class="kpi-sub" id="q-kpi-1-sub"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">铁路客运量（Q1）</div>
-                    <div class="kpi-value up">+5.67%</div>
-                    <div class="kpi-sub">国铁数据</div>
+                    <div class="kpi-label" id="q-kpi-2-label"></div>
+                    <div class="kpi-value" id="q-kpi-2-value"></div>
+                    <div class="kpi-sub" id="q-kpi-2-sub"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">国际航线客运量（Q1 · 三大航）</div>
-                    <div class="kpi-value up">+12.79%</div>
-                    <div class="kpi-sub">出入境同比</div>
+                    <div class="kpi-label" id="q-kpi-3-label"></div>
+                    <div class="kpi-value" id="q-kpi-3-value"></div>
+                    <div class="kpi-sub" id="q-kpi-3-sub"></div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">国际航班运力（Q1 · vs 2019）</div>
-                    <div class="kpi-value down">-9.63%</div>
-                    <div class="kpi-sub">航班管家数据</div>
+                    <div class="kpi-label" id="q-kpi-4-label"></div>
+                    <div class="kpi-value" id="q-kpi-4-value"></div>
+                    <div class="kpi-sub" id="q-kpi-4-sub"></div>
                 </div>
             </div>
 
             <div class="chart-grid single">
                 <div class="chart-card full-width">
                     <div class="chart-header">
-                    <div class="chart-title">Q1 各板块同比表现总览</div>
+                    <div class="chart-title" id="i18n-chart-q-overview">Q1 各板块同比表现总览</div>
                     <button class="chart-download" onclick="downloadChart('quarterly-overview')">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        下载图片
+                        <span class="dl-text">下载图片</span>
                     </button>
                 </div>
                     <div class="chart-container tall" id="quarterly-overview"></div>
@@ -493,21 +517,21 @@
             <div class="chart-grid">
                 <div class="chart-card">
                     <div class="chart-header">
-                        <div class="chart-title">Q1 → Q2 月度趋势变化（核心指标同比）</div>
+                        <div class="chart-title" id="i18n-chart-q-trend">Q1 → Q2 月度趋势变化（核心指标同比）</div>
                         <button class="chart-download" onclick="downloadChart('quarterly-trend')">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                            下载图片
-                        </button>
+                        <span class="dl-text">下载图片</span>
+                    </button>
                     </div>
                     <div class="chart-container tall" id="quarterly-trend"></div>
                 </div>
                 <div class="chart-card">
                     <div class="chart-header">
-                        <div class="chart-title">Q1 vs Q2 对比（Q2 为 4-5 月均值）</div>
+                        <div class="chart-title" id="i18n-chart-q-compare">Q1 vs Q2 对比（Q2 为 4-5 月均值）</div>
                         <button class="chart-download" onclick="downloadChart('quarterly-compare')">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                            下载图片
-                        </button>
+                        <span class="dl-text">下载图片</span>
+                    </button>
                     </div>
                     <div class="chart-container tall" id="quarterly-compare"></div>
                 </div>
@@ -515,43 +539,12 @@
         </div>
 
         <!-- ==================== CONCLUSIONS ==================== -->
-        <div class="conclusions">
-            <h2>数据洞察与结论</h2>
-
-            <div class="conclusion-item positive">
-                <span class="tag positive">亮点</span>
-                <strong>国际航线强劲复苏</strong> — Q1 国际航空客运量同比增速达 <span class="num-highlight">10.3% ~ 12.8%</span>（民航局 / 三大航口径），出入境需求持续释放。但需注意国际航班运力同比 2019 年仍下降 <span class="num-highlight">9.6%</span>，供需缺口仍在，运力恢复滞后于需求。
-            </div>
-
-            <div class="conclusion-item positive">
-                <span class="tag positive">亮点</span>
-                <strong>铁路客运韧性突出</strong> — 1-6 月铁路客运量保持正增长，Q1 整体同比 <span class="num-highlight">+5.67%</span>，在航空票价波动背景下，铁路作为性价比出行方式持续吸引客流。
-            </div>
-
-            <div class="conclusion-item warn">
-                <span class="tag warn">关注</span>
-                <strong>酒店市场量价分化</strong> — Q1 酒店 RevPAR 同比 <span class="num-highlight">+4.8%</span>（ADR 驱动 +3.8%），但周度数据显示 4 月中旬后入住率持续低于去年同期，6 月后 ADR 也开始转负。RevPAR 从 5 月初高点 <span class="num-highlight">+15.2%</span> 回落至 7 月初 <span class="num-highlight">-6.5%</span>，下行趋势明显。
-            </div>
-
-            <div class="conclusion-item negative">
-                <span class="tag negative">风险</span>
-                <strong>国内航空量价承压</strong> — 4-5 月国内航空客运量增速转负（民航局口径 5 月 <span class="num-highlight">-7.8%</span>），票价涨幅持续收窄甚至在 6 月下旬转负（<span class="num-highlight">-9%</span>），存在"以价换量"隐忧。
-            </div>
-
-            <div class="conclusion-item warn">
-                <span class="tag warn">趋势</span>
-                <strong>Q2 开局弱于 Q1</strong> — 4-5 月多项指标增速放缓甚至转负。五一假期（5/3-5/9 周）酒店 RevPAR 冲高至 <span class="num-highlight">+15.2%</span> 但不可持续，节后迅速回落。铁路增速从 Q1 的 <span class="num-highlight">5.67%</span> 降至 5 月 <span class="num-highlight">1.9%</span>。
-            </div>
-
-            <div class="conclusion-item">
-                <span class="tag positive">展望</span>
-                <strong>暑期旺季值得期待</strong> — 6 月铁路客运量企稳（+0.37%），航空客运量降幅收窄。随着 7-8 月暑期旺季到来，旅游出行需求有望迎来季节性反弹，但需关注去年同期高基数效应。
-            </div>
+                <div class="conclusions">
+            <h2 id="i18n-insights-title">数据洞察与结论</h2>
+            <div id="insights-body"></div>
         </div>
 
-        <div class="footer">
-            数据来源：STR、民航局、三大航、国铁、航班管家、飞常准 &nbsp;|&nbsp; 数据截止：2026 年 7 月 11 日 &nbsp;|&nbsp; 同比口径：vs 2025 年同期
-        </div>
+        <div class="footer" id="i18n-footer"></div>
     </div>
 
     <script>
@@ -678,7 +671,7 @@
                 axisLabel: {
                     color: '#6b7280',
                     fontSize: 11,
-                    formatter: v => (v * 100).toFixed(0) + '%',
+                    formatter: v => (v * 100).toFixed(1) + '%',
                 },
                 splitLine: { lineStyle: { color: '#f3f4f6', type: 'dashed' } },
                 axisLine: { show: false },
@@ -701,9 +694,9 @@
                 grid: { ...baseOpts.grid, right: '8%', bottom: '18%' },
                 xAxis: { ...baseOpts.xAxis, data: weeks, axisLabel: { ...baseOpts.xAxis.axisLabel, rotate: 45, interval: 0 } },
                 series: [
-                    lineSeries('入住率', occ, C.blue, true, true),
-                    lineSeries('ADR', adr, C.green, false, true),
-                    lineSeries('RevPAR', rev, C.orange, false, true),
+                    lineSeries(t('seriesOcc'), occ, C.blue, true, true),
+                    lineSeries(t('seriesAdr'), adr, C.green, false, true),
+                    lineSeries(t('seriesRevpar'), rev, C.orange, false, true),
                 ],
             });
         }
@@ -720,9 +713,9 @@
                 grid: { ...baseOpts.grid, right: '8%', bottom: '18%' },
                 xAxis: { ...baseOpts.xAxis, data: weeks, axisLabel: { ...baseOpts.xAxis.axisLabel, rotate: 45, interval: 0 } },
                 series: [
-                    lineSeries('机票客运量', pax, C.purple, true, true),
-                    lineSeries('票价', tkt, C.orange, false, true),
-                    lineSeries('客运航班量', flt, C.blue, false, true),
+                    lineSeries(t('seriesPax'), pax, C.purple, true, true),
+                    lineSeries(t('seriesTicket'), tkt, C.orange, false, true),
+                    lineSeries(t('seriesFlight'), flt, C.blue, false, true),
                 ],
             });
         }
@@ -730,7 +723,7 @@
         // ============ MONTHLY ============
         function renderMonthlyHotel() {
             const c = getChart('monthly-hotel');
-            const months = DATA.monthly.months.slice(0, 5);
+            const months = localizeMonths(DATA.monthly.months.slice(0, 5));
             const occ = DATA.monthly.hotelOccupancy.slice(0, 5);
             const adr = DATA.monthly.hotelADR.slice(0, 5);
             const rev = DATA.monthly.hotelRevPAR.slice(0, 5);
@@ -739,16 +732,16 @@
                 ...baseOpts,
                 xAxis: { ...baseOpts.xAxis, data: months },
                 series: [
-                    barSeries('入住率', occ, C.blue),
-                    barSeries('ADR', adr, C.green),
-                    barSeries('RevPAR', rev, C.orange),
+                    barSeries(t('seriesOcc'), occ, C.blue),
+                    barSeries(t('seriesAdr'), adr, C.green),
+                    barSeries(t('seriesRevpar'), rev, C.orange),
                 ],
             });
         }
 
         function renderMonthlyDomesticAviation() {
             const c = getChart('monthly-domestic-aviation');
-            const months = DATA.monthly.months.slice(0, 5);
+            const months = localizeMonths(DATA.monthly.months.slice(0, 5));
             const caac = DATA.monthly.domAviationCAAC.slice(0, 5);
             const big3 = DATA.monthly.domAviationBig3.slice(0, 5);
 
@@ -758,7 +751,7 @@
                 xAxis: { ...baseOpts.xAxis, data: months },
                 series: [
                     {
-                        name: '民航局口径', type: 'line', data: caac, smooth: true,
+                        name: t('seriesCaac'), type: 'line', data: caac, smooth: true,
                         symbol: 'circle', symbolSize: 7,
                         lineStyle: { color: C.purple, width: 2.5 },
                         itemStyle: { color: C.purple },
@@ -767,7 +760,7 @@
                         label: { show: true, formatter: p => p.dataIndex === caac.length - 1 ? (p.value >= 0 ? '+' : '') + (p.value * 100).toFixed(1) + '%' : '', fontSize: 12, fontWeight: 600, color: C.purple, position: 'right', distance: 6 },
                     },
                     {
-                        name: '三大航口径', type: 'line', data: big3, smooth: true,
+                        name: t('seriesBig3'), type: 'line', data: big3, smooth: true,
                         symbol: 'diamond', symbolSize: 7,
                         lineStyle: { color: C.green, width: 2.5 },
                         itemStyle: { color: C.green },
@@ -780,14 +773,14 @@
 
         function renderMonthlyRailway() {
             const c = getChart('monthly-railway');
-            const months = DATA.monthly.months;
+            const months = localizeMonths(DATA.monthly.months);
             const railway = DATA.monthly.railway;
 
             c.setOption({
                 ...baseOpts,
                 xAxis: { ...baseOpts.xAxis, data: months },
                 series: [{
-                    name: '铁路客运量', type: 'bar',
+                    name: t('seriesRailway'), type: 'bar',
                     data: railway.map(v => ({
                         value: v,
                         itemStyle: { color: v >= 0 ? C.orange : C.red, borderRadius: [4,4,0,0] },
@@ -801,7 +794,7 @@
 
         function renderMonthlyInternational() {
             const c = getChart('monthly-international');
-            const months = DATA.monthly.months.slice(0, 5);
+            const months = localizeMonths(DATA.monthly.months.slice(0, 5));
             const caac = DATA.monthly.intlAviationCAAC.slice(0, 5);
             const big3 = DATA.monthly.intlAviationBig3.slice(0, 5);
             const cap = DATA.monthly.intlCapacity.slice(0, 5);
@@ -812,7 +805,7 @@
                 xAxis: { ...baseOpts.xAxis, data: months },
                 series: [
                     {
-                        name: '国际客运 · 民航局', type: 'line', data: caac, smooth: true,
+                        name: t('seriesIntlCaac'), type: 'line', data: caac, smooth: true,
                         symbol: 'circle', symbolSize: 6,
                         lineStyle: { color: C.blue, width: 2.5 },
                         itemStyle: { color: C.blue },
@@ -820,14 +813,14 @@
                         label: { show: true, formatter: p => p.dataIndex === caac.length - 1 ? (p.value >= 0 ? '+' : '') + (p.value * 100).toFixed(1) + '%' : '', fontSize: 12, fontWeight: 600, color: C.blue, position: 'right', distance: 6 },
                     },
                     {
-                        name: '国际客运 · 三大航', type: 'line', data: big3, smooth: true,
+                        name: t('seriesIntlBig3'), type: 'line', data: big3, smooth: true,
                         symbol: 'diamond', symbolSize: 6,
                         lineStyle: { color: C.green, width: 2.5 },
                         itemStyle: { color: C.green },
                         label: { show: true, formatter: p => p.dataIndex === big3.length - 1 ? (p.value >= 0 ? '+' : '') + (p.value * 100).toFixed(1) + '%' : '', fontSize: 12, fontWeight: 600, color: C.green, position: 'right', distance: 6 },
                     },
                     {
-                        name: '国际航班运力 (vs 2019)', type: 'line', data: cap, smooth: true,
+                        name: t('seriesCapacity'), type: 'line', data: cap, smooth: true,
                         symbol: 'triangle', symbolSize: 6,
                         lineStyle: { color: C.red, width: 2, type: 'dashed' },
                         itemStyle: { color: C.red },
@@ -859,7 +852,7 @@
                         const v = params[0].value;
                         const sign = v >= 0 ? '+' : '';
                         const clr = v >= 0 ? C.up : C.down;
-                        return `<strong>${params[0].name.replace('\n','')}</strong><br/>同比增速: <span style="color:${clr};font-weight:600;">${sign}${(v*100).toFixed(1)}%</span>`;
+                        return `<strong>${params[0].name.replace('\n','')}</strong><br/>${t('yoyGrowth')}: <span style="color:${clr};font-weight:600;">${sign}${(v*100).toFixed(1)}%</span>`;
                     },
                 },
                 grid: { left: '3%', right: '4%', top: '6%', bottom: '8%', containLabel: true },
@@ -871,13 +864,13 @@
                 },
                 yAxis: {
                     type: 'value',
-                    axisLabel: { color: '#6b7280', fontSize: 11, formatter: v => (v*100).toFixed(0)+'%' },
+                    axisLabel: { color: '#6b7280', fontSize: 11, formatter: v => (v*100).toFixed(1)+'%' },
                     splitLine: { lineStyle: { color: '#f3f4f6', type: 'dashed' } },
                     axisLine: { show: false },
                     axisTick: { show: false },
                 },
                 series: [{
-                    name: 'Q1 同比增速', type: 'bar',
+                    name: t('yoyGrowth'), type: 'bar',
                     data: vals.map(v => ({
                         value: v,
                         itemStyle: {
@@ -899,7 +892,7 @@
         // ============ QUARTERLY EXTRA ============
         function renderQuarterlyTrend() {
             const c = getChart('quarterly-trend');
-            const months = DATA.monthly.months;
+            const months = localizeMonths(DATA.monthly.months);
             const hotelRev = DATA.monthly.hotelRevPAR;
             const domAviation = DATA.monthly.domAviationCAAC;
             const railway = DATA.monthly.railway;
@@ -914,7 +907,7 @@
                 ],
                 series: [
                     {
-                        name: '酒店 RevPAR', type: 'line', data: hotelRev, smooth: true,
+                        name: t('seriesHotelRev'), type: 'line', data: hotelRev, smooth: true,
                         symbol: 'circle', symbolSize: 7,
                         lineStyle: { color: C.orange, width: 2.5 },
                         itemStyle: { color: C.orange },
@@ -937,7 +930,7 @@
                         },
                     },
                     {
-                        name: '国内航空客运量', type: 'line', data: domAviation, smooth: true,
+                        name: t('seriesDomAv'), type: 'line', data: domAviation, smooth: true,
                         symbol: 'diamond', symbolSize: 7,
                         lineStyle: { color: C.purple, width: 2.5 },
                         itemStyle: { color: C.purple },
@@ -945,7 +938,7 @@
                         label: { show: true, formatter: p => p.value !== null && p.dataIndex === 4 ? (p.value >= 0 ? '+' : '') + (p.value * 100).toFixed(1) + '%' : '', fontSize: 12, fontWeight: 600, color: C.purple, position: 'right', distance: 6 },
                     },
                     {
-                        name: '铁路客运量', type: 'line', data: railway, smooth: true,
+                        name: t('seriesRailway'), type: 'line', data: railway, smooth: true,
                         symbol: 'triangle', symbolSize: 7,
                         lineStyle: { color: C.green, width: 2.5 },
                         itemStyle: { color: C.green },
@@ -998,7 +991,7 @@
                 },
                 yAxis: {
                     type: 'value',
-                    axisLabel: { color: '#6b7280', fontSize: 11, formatter: v => (v*100).toFixed(0)+'%' },
+                    axisLabel: { color: '#6b7280', fontSize: 11, formatter: v => (v*100).toFixed(1)+'%' },
                     splitLine: { lineStyle: { color: '#f3f4f6', type: 'dashed' } },
                     axisLine: { show: false },
                     axisTick: { show: false },
@@ -1012,7 +1005,7 @@
                         label: { show: true, position: 'outside', formatter: p => (p.value>=0?'+':'')+(p.value*100).toFixed(1)+'%', color: '#6b7280', fontSize: 11 },
                     },
                     {
-                        name: 'Q2 (4-5月均值)', type: 'bar', data: q2,
+                        name: currentLang==='zh' ? 'Q2 (4-5月均值)' : 'Q2 (Apr-May avg)', type: 'bar', data: q2,
                         barWidth: '28%',
                         itemStyle: {
                             color: function(p) {
@@ -1072,46 +1065,121 @@
         }
 
         // ============ INIT ============
-        function updateKPI() {
-            function last(arr) {
-                for (let i = arr.length - 1; i >= 0; i--) {
-                    if (arr[i] != null) return { value: arr[i], index: i };
-                }
-                return { value: null, index: -1 };
+        function lastNonNull(arr) {
+            for (let i = arr.length - 1; i >= 0; i--) {
+                if (arr[i] != null) return { value: arr[i], index: i };
             }
-            const fmt = v => (v >= 0 ? '+' : '') + (v * 100).toFixed(1) + '%';
-            const cls = v => v >= 0 ? 'up' : 'down';
+            return { value: null, index: -1 };
+        }
 
-            // Hotel
-            const occ = last(DATA.weekly.hotelOccupancy);
-            document.getElementById('kpi-occ').textContent = fmt(occ.value);
-            document.getElementById('kpi-occ').className = 'kpi-value ' + cls(occ.value);
-            document.getElementById('kpi-occ-week').textContent = DATA.weekly.weeks[occ.index] + ' 周同比';
+        function fillCard(prefix, i, label, value, sub) {
+            const lab = document.getElementById(prefix + i + '-label');
+            const val = document.getElementById(prefix + i + '-value');
+            const sb = document.getElementById(prefix + i + '-sub');
+            if (lab) lab.textContent = label;
+            if (val) {
+                val.textContent = fmtPct(value);
+                val.className = 'kpi-value ' + (value == null ? '' : (value >= 0 ? 'up' : 'down'));
+            }
+            if (sb) sb.textContent = sub || '';
+        }
 
-            const adr = last(DATA.weekly.hotelADR);
-            document.getElementById('kpi-adr').textContent = fmt(adr.value);
-            document.getElementById('kpi-adr').className = 'kpi-value ' + cls(adr.value);
-            document.getElementById('kpi-adr-week').textContent = DATA.weekly.weeks[adr.index] + ' 周同比';
+        function updateKPI() {
+            const occ = lastNonNull(DATA.weekly.hotelOccupancy);
+            document.getElementById('kpi-occ').textContent = fmtPct(occ.value);
+            document.getElementById('kpi-occ').className = 'kpi-value ' + (occ.value >= 0 ? 'up' : 'down');
+            document.getElementById('kpi-occ-week').textContent = DATA.weekly.weeks[occ.index] + ' ' + t('weekYoY');
 
-            const rev = last(DATA.weekly.hotelRevPAR);
-            document.getElementById('kpi-revpar').textContent = fmt(rev.value);
-            document.getElementById('kpi-revpar').className = 'kpi-value ' + cls(rev.value);
-            document.getElementById('kpi-revpar-week').textContent = DATA.weekly.weeks[rev.index] + ' 周同比';
+            const adr = lastNonNull(DATA.weekly.hotelADR);
+            document.getElementById('kpi-adr').textContent = fmtPct(adr.value);
+            document.getElementById('kpi-adr').className = 'kpi-value ' + (adr.value >= 0 ? 'up' : 'down');
+            document.getElementById('kpi-adr-week').textContent = DATA.weekly.weeks[adr.index] + ' ' + t('weekYoY');
 
-            // Aviation
-            const pax = last(DATA.weekly.aviationPax);
-            document.getElementById('kpi-pax').textContent = fmt(pax.value);
-            document.getElementById('kpi-pax').className = 'kpi-value ' + cls(pax.value);
-            document.getElementById('kpi-pax-week').textContent = DATA.weekly.weeks[pax.index] + ' 周同比';
+            const rev = lastNonNull(DATA.weekly.hotelRevPAR);
+            document.getElementById('kpi-revpar').textContent = fmtPct(rev.value);
+            document.getElementById('kpi-revpar').className = 'kpi-value ' + (rev.value >= 0 ? 'up' : 'down');
+            document.getElementById('kpi-revpar-week').textContent = DATA.weekly.weeks[rev.index] + ' ' + t('weekYoY');
 
-            const tkt = last(DATA.weekly.aviationTicket);
-            document.getElementById('kpi-ticket').textContent = fmt(tkt.value);
-            document.getElementById('kpi-ticket').className = 'kpi-value ' + cls(tkt.value);
-            document.getElementById('kpi-ticket-week').textContent = DATA.weekly.weeks[tkt.index] + ' 周同比';
+            const pax = lastNonNull(DATA.weekly.aviationPax);
+            document.getElementById('kpi-pax').textContent = fmtPct(pax.value);
+            document.getElementById('kpi-pax').className = 'kpi-value ' + (pax.value >= 0 ? 'up' : 'down');
+            document.getElementById('kpi-pax-week').textContent = DATA.weekly.weeks[pax.index] + ' ' + t('weekYoY');
+
+            const tkt = lastNonNull(DATA.weekly.aviationTicket);
+            document.getElementById('kpi-ticket').textContent = fmtPct(tkt.value);
+            document.getElementById('kpi-ticket').className = 'kpi-value ' + (tkt.value >= 0 ? 'up' : 'down');
+            document.getElementById('kpi-ticket-week').textContent = DATA.weekly.weeks[tkt.index] + ' ' + t('weekYoY');
+        }
+
+        function updateMonthlyKPI() {
+            const m = DATA.monthly;
+            const rev = lastNonNull(m.hotelRevPAR);
+            const caac = lastNonNull(m.domAviationCAAC);
+            const rail = lastNonNull(m.railway);
+            const intl = lastNonNull(m.intlAviationBig3);
+            const cap = lastNonNull(m.intlCapacity);
+            const prev = (arr, idx) => (idx > 0 ? arr[idx - 1] : null);
+            fillCard('m-kpi-', 0,
+                currentLang === 'zh' ? ('酒店 RevPAR（' + m.months[rev.index] + '）') : ('Hotel RevPAR (' + monthLabel(m.months[rev.index]) + ')'),
+                rev.value,
+                t('prevMonth') + ': ' + monthLabel(m.months[rev.index - 1] || '') + ' ' + fmtPct(prev(m.hotelRevPAR, rev.index))
+            );
+            fillCard('m-kpi-', 1,
+                currentLang === 'zh' ? ('国内航空客运量（' + m.months[caac.index] + ' · 民航局）') : ('Domestic air pax (' + monthLabel(m.months[caac.index]) + ' · CAAC)'),
+                caac.value,
+                t('prevMonth') + ': ' + monthLabel(m.months[caac.index - 1] || '') + ' ' + fmtPct(prev(m.domAviationCAAC, caac.index))
+            );
+            fillCard('m-kpi-', 2,
+                currentLang === 'zh' ? ('铁路客运量（' + m.months[rail.index] + '）') : ('Railway pax (' + monthLabel(m.months[rail.index]) + ')'),
+                rail.value,
+                t('prevMonth') + ': ' + monthLabel(m.months[rail.index - 1] || '') + ' ' + fmtPct(prev(m.railway, rail.index))
+            );
+            fillCard('m-kpi-', 3,
+                currentLang === 'zh' ? ('国际航线客运量（' + m.months[intl.index] + ' · 三大航）') : ('Intl air pax (' + monthLabel(m.months[intl.index]) + ' · Big3)'),
+                intl.value,
+                t('crossBorder')
+            );
+            fillCard('m-kpi-', 4,
+                currentLang === 'zh' ? ('国际航班运力（' + m.months[cap.index] + ' · vs 2019）') : ('Intl capacity (' + monthLabel(m.months[cap.index]) + ' · vs 2019)'),
+                cap.value,
+                t('vs2019')
+            );
+        }
+
+        function updateQuarterlyKPI() {
+            const q = DATA.quarterly.q1;
+            fillCard('q-kpi-', 0,
+                currentLang === 'zh' ? '酒店 RevPAR（Q1）' : 'Hotel RevPAR (Q1)',
+                q.hotelRevPAR,
+                t('seriesOcc') + ' ' + fmtPct(q.hotelOccupancy) + '  |  ADR ' + fmtPct(q.hotelADR)
+            );
+            fillCard('q-kpi-', 1,
+                currentLang === 'zh' ? '国内航空客运量（Q1 · 民航局）' : 'Domestic air pax (Q1 · CAAC)',
+                q.domAviationCAAC,
+                t('seriesBig3') + ' ' + fmtPct(q.domAviationBig3)
+            );
+            fillCard('q-kpi-', 2,
+                currentLang === 'zh' ? '铁路客运量（Q1）' : 'Railway pax (Q1)',
+                q.railway,
+                t('railSource')
+            );
+            fillCard('q-kpi-', 3,
+                currentLang === 'zh' ? '国际航线客运量（Q1 · 三大航）' : 'Intl air pax (Q1 · Big3)',
+                q.intlAviationBig3,
+                t('crossBorder')
+            );
+            fillCard('q-kpi-', 4,
+                currentLang === 'zh' ? '国际航班运力（Q1 · vs 2019）' : 'Intl capacity (Q1 · vs 2019)',
+                q.intlCapacity,
+                t('vs2019')
+            );
         }
 
         function initAll() {
+            applyStaticI18n();
             updateKPI();
+            updateMonthlyKPI();
+            updateQuarterlyKPI();
             renderWeeklyHotel();
             renderWeeklyAviation();
             renderMonthlyHotel();
@@ -1125,9 +1193,10 @@
 
         window.addEventListener('load', function() {
             if (typeof echarts === 'undefined') {
-                document.body.innerHTML = '<div style="text-align:center;padding:60px 20px;font-family:sans-serif;"><h2>图表加载失败</h2><p style="color:#888;">请检查网络连接后刷新页面</p><p style="color:#aaa;font-size:13px;margin-top:20px;">如持续无法加载，请尝试用系统浏览器打开</p></div>';
+                document.body.innerHTML = '<div style="text-align:center;padding:60px 20px;font-family:sans-serif;"><h2>Chart failed to load</h2><p style="color:#888;">Please check network and refresh</p></div>';
                 return;
             }
+            currentLang = localStorage.getItem(LANG_KEY) || 'zh';
             initAll();
         });
         window.addEventListener('resize', () => {
