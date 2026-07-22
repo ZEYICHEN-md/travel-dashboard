@@ -162,11 +162,11 @@ function toggleLang() {
   setLang(currentLang === 'zh' ? 'en' : 'zh');
 }
 
-function tagClass(tag) {
+function tagTone(tag) {
   if (tag === 'highlight') return 'positive';
   if (tag === 'risk') return 'negative';
-  if (tag === 'watch' || tag === 'trend') return 'warn';
-  return '';
+  if (tag === 'outlook') return 'neutral';
+  return 'default';
 }
 
 function tagText(tag) {
@@ -184,11 +184,22 @@ function renderInsights() {
   const root = document.getElementById('insights-body');
   if (!root) return;
   const items = t('insights');
-  root.innerHTML = items.map(it => {
-    const cls = tagClass(it.tag);
-    return `<div class="conclusion-item ${cls}">
-      <span class="tag ${cls}">${tagText(it.tag)}</span>
-      <strong>${it.title}</strong> — ${it.body}
+  const order = ['highlight', 'watch', 'risk', 'trend', 'outlook'];
+  const groups = {};
+  items.forEach(it => {
+    if (!groups[it.tag]) groups[it.tag] = [];
+    groups[it.tag].push(it);
+  });
+  root.innerHTML = order.filter(tag => groups[tag] && groups[tag].length).map(tag => {
+    const tone = tagTone(tag);
+    const points = groups[tag].map(it => `
+      <div class="insight-point">
+        <div class="insight-point-title">${it.title}</div>
+        <div class="insight-point-body">${it.body}</div>
+      </div>`).join('');
+    return `<div class="insight-group insight-group--${tone}">
+      <div class="insight-group-label">${tagText(tag)}</div>
+      <div class="insight-points">${points}</div>
     </div>`;
   }).join('');
 }
