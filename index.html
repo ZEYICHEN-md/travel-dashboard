@@ -43,20 +43,23 @@
             min-height: 100vh;
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            padding-top: 52px; /* fixed topnav */
         }
 
         .container {
             max-width: 1680px;
             margin: 0 auto;
-            padding: 20px 28px 24px;
+            padding: 16px 28px 24px;
         }
 
-        /* Top navigation */
+        /* Top navigation — fixed; tabs left, actions right */
         .topnav {
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 50;
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.94);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border);
             box-shadow: 0 1px 0 rgba(8, 34, 86, 0.03);
@@ -64,26 +67,11 @@
         .topnav-inner {
             max-width: 1680px;
             margin: 0 auto;
-            padding: 12px 28px;
+            padding: 10px 28px;
             display: flex;
             align-items: center;
-            gap: 28px;
-            flex-wrap: wrap;
-        }
-        .topnav-brand {
-            min-width: 0;
-            flex: 0 1 auto;
-        }
-        .topnav-brand h1 {
-            font-size: 17px;
-            font-weight: 700;
-            color: var(--black);
-            margin: 0;
-            letter-spacing: -0.2px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: min(420px, 42vw);
+            gap: 16px;
+            min-height: 48px;
         }
         .topnav-tabs {
             display: flex;
@@ -123,13 +111,39 @@
             flex-shrink: 0;
             margin-left: auto;
         }
-        .page-meta {
+
+        /* Title block below nav */
+        .page-hero {
             max-width: 1680px;
             margin: 0 auto;
-            padding: 12px 28px 0;
-            font-size: 12px;
-            color: rgba(8, 34, 86, 0.55);
-            line-height: 1.5;
+            padding: 32px 28px 4px;
+            text-align: center;
+        }
+        .page-hero h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--black);
+            margin: 0 0 10px;
+            letter-spacing: -0.4px;
+            line-height: 1.25;
+        }
+        .page-hero h1::after {
+            content: '';
+            display: block;
+            width: 36px;
+            height: 3px;
+            margin: 12px auto 0;
+            border-radius: 2px;
+            background: var(--blue);
+        }
+        .page-meta {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0;
+            font-size: 13px;
+            color: rgba(8, 34, 86, 0.48);
+            line-height: 1.55;
+            text-align: center;
         }
 
         .lang-toggle {
@@ -440,9 +454,9 @@
             align-items: center;
             gap: 6px;
             padding: 7px 14px;
-            border: 1px solid var(--blue);
+            border: 1px solid var(--c02);
             border-radius: 6px;
-            background: var(--blue);
+            background: var(--c02);
             color: #fff;
             font-size: 12px;
             font-weight: 500;
@@ -450,8 +464,8 @@
             transition: all 0.2s;
         }
         .download-all:hover {
-            background: rgba(38, 88, 253, 0.88);
-            border-color: rgba(38, 88, 253, 0.88);
+            background: rgba(8, 34, 86, 0.88);
+            border-color: rgba(8, 34, 86, 0.88);
         }
         .section-header {
             display: flex;
@@ -619,7 +633,6 @@
         @media (max-width: 900px) {
             .q-sector-grid,
             .q-sector-grid--2 { grid-template-columns: minmax(0, 1fr); width: 100%; }
-            .topnav-brand h1 { max-width: 160px; }
         }
         @media (max-width: 768px) {
             .chart-grid { grid-template-columns: 1fr; }
@@ -638,8 +651,11 @@
                 padding: 10px 14px;
                 gap: 10px;
             }
-            .topnav-tabs { order: 3; width: 100%; }
-            .topnav-tabs .tab { flex: 1; text-align: center; padding: 7px 8px; }
+            .topnav-tabs .tab { padding: 7px 10px; font-size: 12px; }
+            .page-hero {
+                padding: 20px 16px 4px;
+            }
+            .page-hero h1 { font-size: 22px; }
             .insight-group {
                 grid-template-columns: 1fr;
                 gap: 8px;
@@ -650,9 +666,6 @@
 <body>
     <nav class="topnav" aria-label="Primary">
         <div class="topnav-inner">
-            <div class="topnav-brand">
-                <h1 id="i18n-title">2026年旅游行业数据看板</h1>
-            </div>
             <div class="topnav-tabs" role="tablist">
                 <button type="button" class="tab active" id="i18n-tab-weekly" onclick="switchView('weekly')">周度趋势</button>
                 <button type="button" class="tab" id="i18n-tab-monthly" onclick="switchView('monthly')">月度趋势</button>
@@ -667,7 +680,10 @@
             </div>
         </div>
     </nav>
-    <div class="page-meta" id="i18n-subtitle">数据口径：同比2025年变化率 | 来源：STR、民航局、三大航、国铁、航班管家、飞常准</div>
+    <header class="page-hero">
+        <h1 id="i18n-title">2026年旅游行业数据看板</h1>
+        <p class="page-meta" id="i18n-subtitle">数据口径：同比2025年变化率 | 来源：STR、民航局、三大航、国铁、航班管家、飞常准</p>
+    </header>
 
     <div class="container">
         <!-- ==================== WEEKLY VIEW ==================== -->
