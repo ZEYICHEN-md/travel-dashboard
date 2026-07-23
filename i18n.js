@@ -311,7 +311,7 @@ function applyStaticI18n() {
     'i18n-sector-hotel': 'sectorHotel',
     'i18n-sector-hotel-w': 'sectorHotel',
     'i18n-sector-hotel-m': 'sectorHotel',
-    'i18n-sector-aviation-w': 'sectorAviation',
+    'i18n-sector-aviation-w': 'sectorDomestic',
     'i18n-sector-domestic': 'sectorDomestic',
     'i18n-sector-domestic-m': 'sectorDomestic',
     'i18n-sector-intl': 'sectorIntl',

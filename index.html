@@ -726,8 +726,8 @@
                             <div class="kpi-sub" id="kpi-occ-week"></div>
                         </div>
                     </div>
-                    <div class="q-sector q-sector--aviation">
-                        <div class="q-sector-title" id="i18n-sector-aviation-w">航空</div>
+                    <div class="q-sector q-sector--domestic">
+                        <div class="q-sector-title" id="i18n-sector-aviation-w">国内航空</div>
                         <div class="kpi-card">
                             <div class="kpi-label" id="i18n-kpi-pax">机票客运量（最新周）</div>
                             <div class="kpi-value" id="kpi-pax"></div>
@@ -805,18 +805,28 @@
                             <div class="kpi-value" id="m-kpi-4-value"></div>
                             <div class="kpi-sub" id="m-kpi-4-sub"></div>
                         </div>
-                    </div>
-                    <div class="q-sector q-sector--intl">
-                        <div class="q-sector-title" id="i18n-sector-intl-m">国际航空</div>
                         <div class="kpi-card">
                             <div class="kpi-label" id="m-kpi-5-label"></div>
                             <div class="kpi-value" id="m-kpi-5-value"></div>
                             <div class="kpi-sub" id="m-kpi-5-sub"></div>
                         </div>
+                    </div>
+                    <div class="q-sector q-sector--intl">
+                        <div class="q-sector-title" id="i18n-sector-intl-m">国际航空</div>
                         <div class="kpi-card">
                             <div class="kpi-label" id="m-kpi-6-label"></div>
                             <div class="kpi-value" id="m-kpi-6-value"></div>
                             <div class="kpi-sub" id="m-kpi-6-sub"></div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label" id="m-kpi-7-label"></div>
+                            <div class="kpi-value" id="m-kpi-7-value"></div>
+                            <div class="kpi-sub" id="m-kpi-7-sub"></div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label" id="m-kpi-8-label"></div>
+                            <div class="kpi-value" id="m-kpi-8-value"></div>
+                            <div class="kpi-sub" id="m-kpi-8-sub"></div>
                         </div>
                     </div>
                 </div>
@@ -2067,8 +2077,10 @@
             const adr = lastNonNull(m.hotelADR);
             const rev = lastNonNull(m.hotelRevPAR);
             const caac = lastNonNull(m.domAviationCAAC);
+            const big3 = lastNonNull(m.domAviationBig3);
             const rail = lastNonNull(m.railway);
-            const intl = lastNonNull(m.intlAviationBig3);
+            const intlCaac = lastNonNull(m.intlAviationCAAC);
+            const intlBig3 = lastNonNull(m.intlAviationBig3);
             const cap = lastNonNull(m.intlCapacity);
             const prev = (arr, idx) => (idx > 0 ? arr[idx - 1] : null);
             const prevLine = (arr, idx) =>
@@ -2094,16 +2106,26 @@
                 prevLine(m.domAviationCAAC, caac.index)
             );
             fillCard('m-kpi-', 4,
+                currentLang === 'zh' ? ('国内航空客运量（' + m.months[big3.index] + ' · 三大航）') : ('Domestic air pax (' + monthLabel(m.months[big3.index]) + ' · Big3)'),
+                big3.value,
+                prevLine(m.domAviationBig3, big3.index)
+            );
+            fillCard('m-kpi-', 5,
                 currentLang === 'zh' ? ('铁路客运量（' + m.months[rail.index] + '）') : ('Railway pax (' + monthLabel(m.months[rail.index]) + ')'),
                 rail.value,
                 prevLine(m.railway, rail.index)
             );
-            fillCard('m-kpi-', 5,
-                currentLang === 'zh' ? ('国际航线客运量（' + m.months[intl.index] + ' · 三大航）') : ('Intl air pax (' + monthLabel(m.months[intl.index]) + ' · Big3)'),
-                intl.value,
+            fillCard('m-kpi-', 6,
+                currentLang === 'zh' ? ('国际航线客运量（' + m.months[intlCaac.index] + ' · 民航局）') : ('Intl air pax (' + monthLabel(m.months[intlCaac.index]) + ' · CAAC)'),
+                intlCaac.value,
                 t('crossBorder')
             );
-            fillCard('m-kpi-', 6,
+            fillCard('m-kpi-', 7,
+                currentLang === 'zh' ? ('国际航线客运量（' + m.months[intlBig3.index] + ' · 三大航）') : ('Intl air pax (' + monthLabel(m.months[intlBig3.index]) + ' · Big3)'),
+                intlBig3.value,
+                t('crossBorder')
+            );
+            fillCard('m-kpi-', 8,
                 currentLang === 'zh' ? ('国际航班运力（' + m.months[cap.index] + ' · vs 2019）') : ('Intl capacity (' + monthLabel(m.months[cap.index]) + ' · vs 2019)'),
                 cap.value,
                 t('vs2019')
