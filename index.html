@@ -504,6 +504,17 @@
             box-shadow: 0 1px 2px rgba(8,34,86,0.08);
         }
         .series-focus-tag.is-on { display: block; }
+        .ytd-avg-tag {
+            position: absolute;
+            z-index: 15;
+            transform: translateY(-50%);
+            font: 700 13px "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            white-space: nowrap;
+            pointer-events: none;
+            line-height: 1.2;
+            padding: 2px 0;
+            background: rgba(255,255,255,0.92);
+        }
         .chart-zoom-metrics {
             display: flex;
             flex-wrap: wrap;
@@ -596,8 +607,15 @@
             line-height: 1.75;
             color: rgba(8, 34, 86, 0.78);
         }
+        .insights-scope {
+            margin: -10px 0 14px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: rgba(8, 34, 86, 0.62);
+            font-weight: 500;
+        }
         .insights-stale {
-            margin: -8px 0 16px;
+            margin: 0 0 16px;
             padding: 8px 12px;
             font-size: 12.5px;
             line-height: 1.5;
@@ -693,9 +711,9 @@
                     <div class="q-sector q-sector--hotel">
                         <div class="q-sector-title" id="i18n-sector-hotel-w">酒店</div>
                         <div class="kpi-card">
-                            <div class="kpi-label" id="i18n-kpi-occ">酒店入住率（最新周）</div>
-                            <div class="kpi-value" id="kpi-occ"></div>
-                            <div class="kpi-sub" id="kpi-occ-week"></div>
+                            <div class="kpi-label" id="i18n-kpi-revpar">酒店 RevPAR（最新周）</div>
+                            <div class="kpi-value" id="kpi-revpar"></div>
+                            <div class="kpi-sub" id="kpi-revpar-week"></div>
                         </div>
                         <div class="kpi-card">
                             <div class="kpi-label" id="i18n-kpi-adr">酒店 ADR（最新周）</div>
@@ -703,9 +721,9 @@
                             <div class="kpi-sub" id="kpi-adr-week"></div>
                         </div>
                         <div class="kpi-card">
-                            <div class="kpi-label" id="i18n-kpi-revpar">酒店 RevPAR（最新周）</div>
-                            <div class="kpi-value" id="kpi-revpar"></div>
-                            <div class="kpi-sub" id="kpi-revpar-week"></div>
+                            <div class="kpi-label" id="i18n-kpi-occ">酒店入住率（最新周）</div>
+                            <div class="kpi-value" id="kpi-occ"></div>
+                            <div class="kpi-sub" id="kpi-occ-week"></div>
                         </div>
                     </div>
                     <div class="q-sector q-sector--aviation">
@@ -720,6 +738,11 @@
                             <div class="kpi-value" id="kpi-ticket"></div>
                             <div class="kpi-sub" id="kpi-ticket-week"></div>
                         </div>
+                        <div class="kpi-card">
+                            <div class="kpi-label" id="i18n-kpi-flight">客运航班量（最新周）</div>
+                            <div class="kpi-value" id="kpi-flight"></div>
+                            <div class="kpi-sub" id="kpi-flight-week"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -727,7 +750,7 @@
             <div class="chart-grid single">
                 <div class="chart-card">
                     <div class="chart-header">
-                    <div class="chart-title" id="i18n-chart-weekly-hotel">酒店周度指标（入住率 / ADR / RevPAR 同比）</div>
+                    <div class="chart-title" id="i18n-chart-weekly-hotel">酒店周度指标（RevPAR / ADR / 入住率 同比）</div>
                     <button class="chart-download" onclick="downloadChart('weekly-hotel')">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                         <span class="dl-text">下载图片</span>
@@ -802,7 +825,7 @@
             <div class="chart-grid">
                 <div class="chart-card">
                     <div class="chart-header">
-                    <div class="chart-title" id="i18n-chart-monthly-hotel">酒店月度指标（入住率 / ADR / RevPAR 同比）</div>
+                    <div class="chart-title" id="i18n-chart-monthly-hotel">酒店月度指标（RevPAR / ADR / 入住率 同比）</div>
                     <button class="chart-download" onclick="downloadChart('monthly-hotel')">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                         <span class="dl-text">下载图片</span>
@@ -932,6 +955,7 @@
         <!-- ==================== CONCLUSIONS ==================== -->
                 <div class="conclusions">
             <h2 id="i18n-insights-title">数据洞察与结论</h2>
+            <p id="insights-scope" class="insights-scope"></p>
             <div id="insights-stale" class="insights-stale" hidden></div>
             <div id="insights-body"></div>
         </div>
@@ -960,7 +984,10 @@
             if (tabEl) tabEl.classList.add('active');
             if (typeof renderInsights === 'function') renderInsights();
             setTimeout(() => {
-                Object.values(chartInstances).forEach(c => c.resize());
+                Object.values(chartInstances).forEach(c => {
+                    c.resize();
+                    if (typeof c.__ytdRefresh === 'function') c.__ytdRefresh();
+                });
             }, 100);
         }
 
@@ -968,7 +995,16 @@
         function downloadChart(id) {
             const c = chartInstances[id];
             if (!c) return;
+            const host = c.getDom();
+            const ytdTag = host && host.querySelector('.ytd-avg-tag');
+            const showYtdOnCanvas = ytdTag && !ytdTag.hidden;
+            if (showYtdOnCanvas) {
+                c.setOption({ graphic: [{ id: 'ytd-avg-label', style: { opacity: 1 } }] });
+            }
             const url = c.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: '#fff' });
+            if (showYtdOnCanvas) {
+                c.setOption({ graphic: [{ id: 'ytd-avg-label', style: { opacity: 0 } }] });
+            }
             const a = document.createElement('a');
             a.href = url;
             a.download = id + '.png';
@@ -1171,7 +1207,7 @@
                     selectedMode: true,
                     data: series.map(s => s.name).filter(Boolean),
                 },
-                grid: { ...baseOpts.grid, right: '10%', bottom: 78, top: '10%' },
+                grid: { ...baseOpts.grid, right: 168, bottom: 78, top: '10%' },
                 dataZoom: weeklyDataZoom(),
                 xAxis: weeklyXAxis(weeks),
                 series: [shadow].concat(series),
@@ -1303,19 +1339,24 @@
             const occ = DATA.weekly.hotelOccupancy;
             const adr = DATA.weekly.hotelADR;
             const rev = DATA.weekly.hotelRevPAR;
-            const arrays = [occ, adr, rev];
+            const arrays = [rev, adr, occ];
             if (zoomShadowIndex[chartId] == null) zoomShadowIndex[chartId] = 1;
             const shadowIdx = zoomShadowIndex[chartId];
 
             const series = withHoverFocus([
-                lineSeries(t('seriesOcc'), occ, C.c03, true, true, -14),
+                lineSeries(t('seriesRevpar'), rev, C.c03, true, true, -14),
                 lineSeries(t('seriesAdr'), adr, C.c02, false, true, 0),
-                lineSeries(t('seriesRevpar'), rev, C.c04, false, true, 14),
+                lineSeries(t('seriesOcc'), occ, C.c04, false, true, 14),
             ]);
             c.setOption(weeklyChartOpts(weeks, series, shadowIdx));
-            attachExtrema(c, arrays, null, 1);
+            attachExtrema(c, arrays, null, 1, {
+                mode: 'ytdAvg',
+                avgSeriesIndex: 0,
+                color: C.c03,
+                labelKey: 'markYtdAvgRevpar',
+            });
             bindSeriesToggles(c, series);
-            bindZoomMetricSwitch(chartId, [t('seriesOcc'), t('seriesAdr'), t('seriesRevpar')], shadowIdx, function(i) {
+            bindZoomMetricSwitch(chartId, [t('seriesRevpar'), t('seriesAdr'), t('seriesOcc')], shadowIdx, function(i) {
                 zoomShadowIndex[chartId] = i;
                 renderWeeklyHotel();
             });
@@ -1338,7 +1379,12 @@
                 lineSeries(t('seriesFlight'), flt, C.c04, false, true, 14),
             ]);
             c.setOption(weeklyChartOpts(weeks, series, shadowIdx));
-            attachExtrema(c, arrays, null, 1);
+            attachExtrema(c, arrays, null, 1, {
+                mode: 'ytdAvg',
+                avgSeriesIndex: 0,
+                color: C.c03,
+                labelKey: 'markYtdAvgPax',
+            });
             bindSeriesToggles(c, series);
             bindZoomMetricSwitch(chartId, [t('seriesPax'), t('seriesTicket'), t('seriesFlight')], shadowIdx, function(i) {
                 zoomShadowIndex[chartId] = i;
@@ -1347,22 +1393,40 @@
         }
 
         // ============ MONTHLY ============
+        /** Slice monthly series through the latest month that has any non-null value. */
+        function monthlyThru(...arrays) {
+            let last = -1;
+            arrays.forEach(arr => {
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i] != null && !Number.isNaN(arr[i])) last = Math.max(last, i);
+                }
+            });
+            const n = Math.max(last + 1, 1);
+            return {
+                months: localizeMonths(DATA.monthly.months.slice(0, n)),
+                slice: (arr) => arr.slice(0, n),
+            };
+        }
+
         function renderMonthlyHotel() {
             const c = getChart('monthly-hotel');
-            const months = localizeMonths(DATA.monthly.months.slice(0, 5));
-            const occ = DATA.monthly.hotelOccupancy.slice(0, 5);
-            const adr = DATA.monthly.hotelADR.slice(0, 5);
-            const rev = DATA.monthly.hotelRevPAR.slice(0, 5);
-            const arrays = [occ, adr, rev];
+            const occAll = DATA.monthly.hotelOccupancy;
+            const adrAll = DATA.monthly.hotelADR;
+            const revAll = DATA.monthly.hotelRevPAR;
+            const thru = monthlyThru(occAll, adrAll, revAll);
+            const occ = thru.slice(occAll);
+            const adr = thru.slice(adrAll);
+            const rev = thru.slice(revAll);
+            const arrays = [rev, adr, occ];
 
             const series = withHoverFocus([
-                barSeries(t('seriesOcc'), occ, C.c03),
+                barSeries(t('seriesRevpar'), rev, C.c03),
                 barSeries(t('seriesAdr'), adr, C.c02),
-                barSeries(t('seriesRevpar'), rev, C.c04),
+                barSeries(t('seriesOcc'), occ, C.c04),
             ]);
             c.setOption({
                 ...baseOpts,
-                xAxis: { ...baseOpts.xAxis, data: months },
+                xAxis: { ...baseOpts.xAxis, data: thru.months },
                 series,
             });
             attachExtrema(c, arrays);
@@ -1371,9 +1435,11 @@
 
         function renderMonthlyDomesticAviation() {
             const c = getChart('monthly-domestic-aviation');
-            const months = localizeMonths(DATA.monthly.months.slice(0, 5));
-            const caac = DATA.monthly.domAviationCAAC.slice(0, 5);
-            const big3 = DATA.monthly.domAviationBig3.slice(0, 5);
+            const caacAll = DATA.monthly.domAviationCAAC;
+            const big3All = DATA.monthly.domAviationBig3;
+            const thru = monthlyThru(caacAll, big3All);
+            const caac = thru.slice(caacAll);
+            const big3 = thru.slice(big3All);
 
             const series = withHoverFocus([
                 lineSeries(t('seriesCaac'), caac, C.c03, true, true, -8),
@@ -1382,7 +1448,7 @@
             c.setOption({
                 ...baseOpts,
                 grid: { ...baseOpts.grid, right: '8%' },
-                xAxis: { ...baseOpts.xAxis, data: months },
+                xAxis: { ...baseOpts.xAxis, data: thru.months },
                 series,
             });
             attachExtrema(c, [caac, big3]);
@@ -1391,12 +1457,13 @@
 
         function renderMonthlyRailway() {
             const c = getChart('monthly-railway');
-            const months = localizeMonths(DATA.monthly.months);
-            const railway = DATA.monthly.railway;
+            const railwayAll = DATA.monthly.railway;
+            const thru = monthlyThru(railwayAll);
+            const railway = thru.slice(railwayAll);
 
             c.setOption({
                 ...baseOpts,
-                xAxis: { ...baseOpts.xAxis, data: months },
+                xAxis: { ...baseOpts.xAxis, data: thru.months },
                 series: withHoverFocus([{
                     name: t('seriesRailway'), type: 'bar',
                     data: railway.map(v => ({
@@ -1415,10 +1482,13 @@
 
         function renderMonthlyInternational() {
             const c = getChart('monthly-international');
-            const months = localizeMonths(DATA.monthly.months.slice(0, 5));
-            const caac = DATA.monthly.intlAviationCAAC.slice(0, 5);
-            const big3 = DATA.monthly.intlAviationBig3.slice(0, 5);
-            const cap = DATA.monthly.intlCapacity.slice(0, 5);
+            const caacAll = DATA.monthly.intlAviationCAAC;
+            const big3All = DATA.monthly.intlAviationBig3;
+            const capAll = DATA.monthly.intlCapacity;
+            const thru = monthlyThru(caacAll, big3All, capAll);
+            const caac = thru.slice(caacAll);
+            const big3 = thru.slice(big3All);
+            const cap = thru.slice(capAll);
 
             const series = withHoverFocus([
                 lineSeries(t('seriesIntlCaac'), caac, C.c03, true, true, -14),
@@ -1430,7 +1500,7 @@
             c.setOption({
                 ...baseOpts,
                 grid: { ...baseOpts.grid, right: '8%' },
-                xAxis: { ...baseOpts.xAxis, data: months },
+                xAxis: { ...baseOpts.xAxis, data: thru.months },
                 series,
             });
             attachExtrema(c, [caac, big3, cap]);
@@ -1549,6 +1619,20 @@
             return { min, max };
         }
 
+        /** Year-to-date mean of a series from index 0 through `end` (inclusive). */
+        function ytdAverage(arr, end) {
+            let sum = 0, count = 0;
+            const last = end == null ? arr.length - 1 : end;
+            for (let i = 0; i <= last; i++) {
+                const v = seriesValueAt(arr, i);
+                if (v == null || Number.isNaN(+v)) continue;
+                sum += +v;
+                count++;
+            }
+            if (!count) return null;
+            return sum / count;
+        }
+
         function extremaMarkLine(min, max, withZero) {
             const data = [];
             if (withZero) {
@@ -1581,6 +1665,77 @@
                 });
             }
             return { silent: true, symbol: 'none', data };
+        }
+
+        function ytdAvgMarkLine(avg, withZero, color) {
+            const lineColor = color || C.c03;
+            const data = [];
+            if (withZero) {
+                data.push({ yAxis: 0, lineStyle: { color: 'rgba(8,34,86,0.35)', type: 'dashed', width: 1 }, label: { show: false } });
+            }
+            if (avg != null && isFinite(avg)) {
+                data.push({
+                    yAxis: avg,
+                    lineStyle: { color: lineColor, type: [10, 8], width: 1.5 },
+                    label: { show: false },
+                });
+            }
+            return { silent: true, symbol: 'none', data };
+        }
+
+        /** Place YTD Avg text in the right gutter via DOM overlay (outside the plot). */
+        function upsertYtdAvgLabel(chart, avg, color, labelText) {
+            const host = chart.getDom();
+            if (!host) return;
+            if (getComputedStyle(host).position === 'static') {
+                host.style.position = 'relative';
+            }
+            let tag = host.querySelector('.ytd-avg-tag');
+            if (!tag) {
+                tag = document.createElement('div');
+                tag.className = 'ytd-avg-tag';
+                host.appendChild(tag);
+            }
+            if (avg == null || !isFinite(avg)) {
+                tag.hidden = true;
+                tag.textContent = '';
+                chart.setOption({ graphic: [{ id: 'ytd-avg-label', $action: 'remove' }] });
+                return;
+            }
+            let left = 0, top = 0;
+            try {
+                const yPx = chart.convertToPixel({ yAxisIndex: 0 }, avg);
+                const rect = chart.getModel().getComponent('grid', 0).coordinateSystem.getRect();
+                // Anchor LEFT edge just past the plot so text stays in the right blank margin
+                left = Math.round(rect.x + rect.width + 10);
+                top = Math.round(yPx);
+            } catch (e) {
+                return;
+            }
+            tag.hidden = false;
+            tag.textContent = (labelText || '') + ' ' + pctLabel(avg);
+            tag.style.right = 'auto';
+            tag.style.left = left + 'px';
+            tag.style.top = top + 'px';
+            tag.style.color = color || C.c03;
+            chart.setOption({
+                graphic: [{
+                    id: 'ytd-avg-label',
+                    type: 'text',
+                    left,
+                    top,
+                    silent: true,
+                    z: 100,
+                    style: {
+                        text: tag.textContent,
+                        fill: color || C.c03,
+                        font: '700 13px "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif',
+                        align: 'left',
+                        verticalAlign: 'middle',
+                        opacity: 0,
+                    },
+                }],
+            });
         }
 
         function withHoverFocus(seriesList) {
@@ -1654,9 +1809,11 @@
             chart.on('globalout', hideTag);
         }
 
-        function attachExtrema(chart, arrays, extraMarkData, markSeriesIndex) {
+        function attachExtrema(chart, arrays, extraMarkData, markSeriesIndex, opts) {
             const n = Math.max(...arrays.map(a => a.length), 0);
             const si = markSeriesIndex == null ? 0 : markSeriesIndex;
+            const mode = (opts && opts.mode) || 'extrema';
+            const avgSeriesIndex = (opts && opts.avgSeriesIndex != null) ? opts.avgSeriesIndex : 0;
             function refresh() {
                 if (!n) return;
                 let start = 0, end = n - 1;
@@ -1668,17 +1825,40 @@
                         end = Math.min(n - 1, Math.max(start, Math.ceil(n * (dz.end != null ? dz.end : 100) / 100) - 1));
                     }
                 } catch (e) { /* ignore */ }
+                let ml;
+                if (mode === 'ytdAvg') {
+                    const avg = ytdAverage(arrays[avgSeriesIndex] || [], end);
+                    if (avg == null) return;
+                    const labelKey = (opts && opts.labelKey) || 'markYtdAvgPax';
+                    const color = (opts && opts.color) || C.c03;
+                    ml = ytdAvgMarkLine(avg, true, color);
+                    if (extraMarkData && extraMarkData.length) {
+                        ml.data = ml.data.concat(extraMarkData);
+                    }
+                    const seriesPayload = [];
+                    for (let i = 0; i < si; i++) seriesPayload.push({});
+                    seriesPayload.push({ markLine: ml });
+                    chart.setOption({ series: seriesPayload });
+                    requestAnimationFrame(function() {
+                        upsertYtdAvgLabel(chart, avg, color, t(labelKey));
+                    });
+                    return;
+                }
                 const ex = findExtrema(arrays, start, end);
                 if (!ex) return;
-                const ml = extremaMarkLine(ex.min, ex.max, true);
+                ml = extremaMarkLine(ex.min, ex.max, true);
                 if (extraMarkData && extraMarkData.length) {
                     ml.data = ml.data.concat(extraMarkData);
                 }
                 const seriesPayload = [];
                 for (let i = 0; i < si; i++) seriesPayload.push({});
                 seriesPayload.push({ markLine: ml });
-                chart.setOption({ series: seriesPayload });
+                chart.setOption({
+                    series: seriesPayload,
+                    graphic: [{ id: 'ytd-avg-label', $action: 'remove' }],
+                });
             }
+            chart.__ytdRefresh = mode === 'ytdAvg' ? refresh : null;
             chart.off('datazoom');
             chart.on('datazoom', refresh);
             refresh();
@@ -1829,6 +2009,11 @@
             document.getElementById('kpi-ticket').textContent = fmtPct(tkt.value);
             document.getElementById('kpi-ticket').className = 'kpi-value ' + (tkt.value >= 0 ? 'up' : 'down');
             document.getElementById('kpi-ticket-week').textContent = DATA.weekly.weeks[tkt.index] + ' ' + t('weekYoY');
+
+            const flt = lastNonNull(DATA.weekly.aviationFlight);
+            document.getElementById('kpi-flight').textContent = fmtPct(flt.value);
+            document.getElementById('kpi-flight').className = 'kpi-value ' + (flt.value >= 0 ? 'up' : 'down');
+            document.getElementById('kpi-flight-week').textContent = DATA.weekly.weeks[flt.index] + ' ' + t('weekYoY');
         }
 
         function updateMonthlyKPI() {
@@ -1844,9 +2029,9 @@
             const prevLine = (arr, idx) =>
                 t('prevMonth') + ': ' + monthLabel(m.months[idx - 1] || '') + ' ' + fmtPct(prev(arr, idx));
             fillCard('m-kpi-', 0,
-                currentLang === 'zh' ? ('酒店入住率（' + m.months[occ.index] + '）') : ('Hotel occupancy (' + monthLabel(m.months[occ.index]) + ')'),
-                occ.value,
-                prevLine(m.hotelOccupancy, occ.index)
+                currentLang === 'zh' ? ('酒店 RevPAR（' + m.months[rev.index] + '）') : ('Hotel RevPAR (' + monthLabel(m.months[rev.index]) + ')'),
+                rev.value,
+                prevLine(m.hotelRevPAR, rev.index)
             );
             fillCard('m-kpi-', 1,
                 currentLang === 'zh' ? ('酒店 ADR（' + m.months[adr.index] + '）') : ('Hotel ADR (' + monthLabel(m.months[adr.index]) + ')'),
@@ -1854,9 +2039,9 @@
                 prevLine(m.hotelADR, adr.index)
             );
             fillCard('m-kpi-', 2,
-                currentLang === 'zh' ? ('酒店 RevPAR（' + m.months[rev.index] + '）') : ('Hotel RevPAR (' + monthLabel(m.months[rev.index]) + ')'),
-                rev.value,
-                prevLine(m.hotelRevPAR, rev.index)
+                currentLang === 'zh' ? ('酒店入住率（' + m.months[occ.index] + '）') : ('Hotel occupancy (' + monthLabel(m.months[occ.index]) + ')'),
+                occ.value,
+                prevLine(m.hotelOccupancy, occ.index)
             );
             fillCard('m-kpi-', 3,
                 currentLang === 'zh' ? ('国内航空客运量（' + m.months[caac.index] + ' · 民航局）') : ('Domestic air pax (' + monthLabel(m.months[caac.index]) + ' · CAAC)'),
@@ -1883,8 +2068,8 @@
         function updateQuarterlyKPI() {
             const q = DATA.quarterly.q1;
             fillCard('q-kpi-', 0,
-                currentLang === 'zh' ? '酒店入住率（Q1）' : 'Hotel occupancy (Q1)',
-                q.hotelOccupancy,
+                currentLang === 'zh' ? '酒店 RevPAR（Q1）' : 'Hotel RevPAR (Q1)',
+                q.hotelRevPAR,
                 t('strSource')
             );
             fillCard('q-kpi-', 1,
@@ -1893,8 +2078,8 @@
                 t('strSource')
             );
             fillCard('q-kpi-', 2,
-                currentLang === 'zh' ? '酒店 RevPAR（Q1）' : 'Hotel RevPAR (Q1)',
-                q.hotelRevPAR,
+                currentLang === 'zh' ? '酒店入住率（Q1）' : 'Hotel occupancy (Q1)',
+                q.hotelOccupancy,
                 t('strSource')
             );
             fillCard('q-kpi-', 3,
@@ -1953,7 +2138,10 @@
             initAll();
         });
         window.addEventListener('resize', () => {
-            Object.values(chartInstances).forEach(c => c.resize());
+            Object.values(chartInstances).forEach(c => {
+                c.resize();
+                if (typeof c.__ytdRefresh === 'function') c.__ytdRefresh();
+            });
         });
     </script>
 </body>

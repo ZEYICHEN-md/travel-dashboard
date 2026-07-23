@@ -16,9 +16,10 @@ const I18N = {
     kpiRevpar: '酒店 RevPAR（最新周）',
     kpiPax: '机票客运量（最新周）',
     kpiTicket: '机票票价（最新周）',
-    chartWeeklyHotel: '酒店周度指标（入住率 / ADR / RevPAR 同比）',
+    kpiFlight: '客运航班量（最新周）',
+    chartWeeklyHotel: '酒店周度指标（RevPAR / ADR / 入住率 同比）',
     chartWeeklyAviation: '航空周度指标（客运量 / 票价 / 航班量 同比）',
-    chartMonthlyHotel: '酒店月度指标（入住率 / ADR / RevPAR 同比）',
+    chartMonthlyHotel: '酒店月度指标（RevPAR / ADR / 入住率 同比）',
     chartMonthlyDomAv: '国内航空客运量月度同比（民航局 vs 三大航）',
     chartMonthlyRailway: '铁路客运量月度同比',
     chartMonthlyIntl: '国际航空客运量 & 运力月度同比',
@@ -37,6 +38,8 @@ const I18N = {
     seriesPax: '机票客运量',
     seriesTicket: '票价',
     seriesFlight: '客运航班量',
+    markYtdAvgPax: '客运量 YTD Avg.',
+    markYtdAvgRevpar: 'RevPAR YTD Avg.',
     seriesCaac: '民航局',
     seriesBig3: '三大航',
     seriesRailway: '铁路客运量',
@@ -47,6 +50,9 @@ const I18N = {
     seriesDomAv: '国内航空客运量',
     yoyGrowth: '同比增速',
     insightsTitle: '数据洞察与结论',
+    insightsScopeWeekly: '时间范围：周度同比（最新有数周 {latest}）',
+    insightsScopeMonthly: '时间范围：月度同比（有数月份至 {latest}）',
+    insightsScopeQuarterly: '时间范围：季度汇总（Q1 全季；Q2 为 4–5 月部分均值）',
     insightsStale: '本粒度洞察可能已过期（指标已更新，洞察尚未按新数据确认）',
     insightsEmpty: '本粒度暂无洞察',
     footer: '数据来源：STR、民航局、三大航、国铁、航班管家、飞常准',
@@ -75,9 +81,10 @@ const I18N = {
     kpiRevpar: 'Hotel RevPAR (latest week)',
     kpiPax: 'Air passengers (latest week)',
     kpiTicket: 'Airfares (latest week)',
-    chartWeeklyHotel: 'Weekly hotel metrics (Occupancy / ADR / RevPAR YoY)',
+    kpiFlight: 'Passenger flights (latest week)',
+    chartWeeklyHotel: 'Weekly hotel metrics (RevPAR / ADR / Occupancy YoY)',
     chartWeeklyAviation: 'Weekly aviation metrics (Pax / Fare / Flights YoY)',
-    chartMonthlyHotel: 'Monthly hotel metrics (Occupancy / ADR / RevPAR YoY)',
+    chartMonthlyHotel: 'Monthly hotel metrics (RevPAR / ADR / Occupancy YoY)',
     chartMonthlyDomAv: 'Domestic air pax monthly YoY (CAAC vs Big3)',
     chartMonthlyRailway: 'Railway pax monthly YoY',
     chartMonthlyIntl: 'International air pax & capacity monthly YoY',
@@ -96,6 +103,8 @@ const I18N = {
     seriesPax: 'Air passengers',
     seriesTicket: 'Airfare',
     seriesFlight: 'Passenger flights',
+    markYtdAvgPax: 'Pax YTD Avg.',
+    markYtdAvgRevpar: 'RevPAR YTD Avg.',
     seriesCaac: 'CAAC',
     seriesBig3: 'Big3',
     seriesRailway: 'Railway pax',
@@ -106,6 +115,9 @@ const I18N = {
     seriesDomAv: 'Domestic air pax',
     yoyGrowth: 'YoY growth',
     insightsTitle: 'Insights',
+    insightsScopeWeekly: 'Coverage: weekly YoY (latest week with data: {latest})',
+    insightsScopeMonthly: 'Coverage: monthly YoY (through {latest})',
+    insightsScopeQuarterly: 'Coverage: quarterly aggregates (full Q1; Q2 = Apr–May partial average)',
     insightsStale: 'Insights for this period may be stale (metrics updated; insights not re-confirmed)',
     insightsEmpty: 'No insights for this period yet',
     footer: 'Sources: STR, CAAC, Big3, China Railway, VariFlight, VeryZhun',
@@ -190,10 +202,52 @@ function insightsStaleForView(view) {
   return !!INSIGHTS.meta.stale[period];
 }
 
+function lastNonNullIndex(series) {
+  if (!Array.isArray(series)) return -1;
+  for (let i = series.length - 1; i >= 0; i--) {
+    if (series[i] != null && !Number.isNaN(series[i])) return i;
+  }
+  return -1;
+}
+
+function latestWeeklyLabel() {
+  if (typeof DATA === 'undefined' || !DATA.weekly) return '—';
+  const idx = lastNonNullIndex(DATA.weekly.hotelRevPAR);
+  if (idx < 0) return '—';
+  return DATA.weekly.weeks[idx] || '—';
+}
+
+function latestMonthlyLabel() {
+  if (typeof DATA === 'undefined' || !DATA.monthly) return '—';
+  const candidates = [
+    DATA.monthly.railway,
+    DATA.monthly.hotelRevPAR,
+    DATA.monthly.domAviationCAAC,
+  ];
+  let idx = -1;
+  candidates.forEach(s => { idx = Math.max(idx, lastNonNullIndex(s)); });
+  if (idx < 0) return '—';
+  return monthLabel(DATA.monthly.months[idx] || '—');
+}
+
+function insightsScopeText(view) {
+  const period = view || currentView || 'weekly';
+  if (period === 'weekly') {
+    return t('insightsScopeWeekly').replace('{latest}', latestWeeklyLabel());
+  }
+  if (period === 'monthly') {
+    return t('insightsScopeMonthly').replace('{latest}', latestMonthlyLabel());
+  }
+  return t('insightsScopeQuarterly');
+}
+
 function renderInsights() {
   const root = document.getElementById('insights-body');
   const staleEl = document.getElementById('insights-stale');
+  const scopeEl = document.getElementById('insights-scope');
   if (!root) return;
+
+  if (scopeEl) scopeEl.textContent = insightsScopeText(currentView);
 
   if (staleEl) {
     const stale = insightsStaleForView(currentView);
@@ -244,6 +298,7 @@ function applyStaticI18n() {
     'i18n-kpi-revpar': 'kpiRevpar',
     'i18n-kpi-pax': 'kpiPax',
     'i18n-kpi-ticket': 'kpiTicket',
+    'i18n-kpi-flight': 'kpiFlight',
     'i18n-chart-weekly-hotel': 'chartWeeklyHotel',
     'i18n-chart-weekly-aviation': 'chartWeeklyAviation',
     'i18n-chart-monthly-hotel': 'chartMonthlyHotel',
