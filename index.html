@@ -1082,6 +1082,7 @@
             cyan:  '#3d9fd0',
             ink:   '#082256',
             sky:   '#2658fd',
+            ytdAvg: '#149888',   // YTD 参考线 / 标注（青绿，略深于 #18C0A8）
         };
 
         const tooltipFmt = function(params) {
@@ -1367,7 +1368,7 @@
             attachExtrema(c, arrays, null, 1, {
                 mode: 'ytdAvg',
                 avgSeriesIndex: 0,
-                color: C.c03,
+                color: C.ytdAvg,
                 labelKey: 'markYtdAvgRevpar',
             });
             bindSeriesToggles(c, series);
@@ -1397,7 +1398,7 @@
             attachExtrema(c, arrays, null, 1, {
                 mode: 'ytdAvg',
                 avgSeriesIndex: 0,
-                color: C.c03,
+                color: C.ytdAvg,
                 labelKey: 'markYtdAvgPax',
             });
             bindSeriesToggles(c, series);
@@ -1728,7 +1729,7 @@
         }
 
         function ytdAvgMarkLine(avg, withZero, color) {
-            const lineColor = color || C.c03;
+            const lineColor = color || C.ytdAvg;
             const data = [];
             if (withZero) {
                 data.push({ yAxis: 0, lineStyle: { color: 'rgba(8,34,86,0.35)', type: 'dashed', width: 1 }, label: { show: false } });
@@ -1777,7 +1778,7 @@
             tag.style.right = 'auto';
             tag.style.left = left + 'px';
             tag.style.top = top + 'px';
-            tag.style.color = color || C.c03;
+            tag.style.color = color || C.ytdAvg;
             chart.setOption({
                 graphic: [{
                     id: 'ytd-avg-label',
@@ -1788,7 +1789,7 @@
                     z: 100,
                     style: {
                         text: tag.textContent,
-                        fill: color || C.c03,
+                        fill: color || C.ytdAvg,
                         font: '700 13px "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif',
                         align: 'left',
                         verticalAlign: 'middle',
@@ -1901,7 +1902,7 @@
                     const avg = ytdAverage(arrays[avgSeriesIndex] || [], end);
                     if (avg == null) return;
                     const labelKey = (opts && opts.labelKey) || 'markYtdAvgPax';
-                    const color = (opts && opts.color) || C.c03;
+                    const color = (opts && opts.color) || C.ytdAvg;
                     ml = ytdAvgMarkLine(avg, true, color);
                     if (extraMarkData && extraMarkData.length) {
                         ml.data = ml.data.concat(extraMarkData);
