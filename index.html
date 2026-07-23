@@ -1529,12 +1529,37 @@
                 const xApr = chart.convertToPixel({ xAxisIndex: 0 }, 3);
                 const xJan = chart.convertToPixel({ xAxisIndex: 0 }, 0);
                 const xJun = chart.convertToPixel({ xAxisIndex: 0 }, 5);
-                if ([xMar, xApr, xJan, xJun].some(v => v == null || Number.isNaN(v))) return;
+                const xStart = chart.convertToPixel({ xAxisIndex: 0 }, -0.5);
+                const xEnd = chart.convertToPixel({ xAxisIndex: 0 }, 5.5);
+                if ([xMar, xApr, xJan, xJun, xStart, xEnd].some(v => v == null || Number.isNaN(v))) return;
+                const xMid = (xMar + xApr) / 2;
                 const gridComp = chart.getModel().getComponent('grid', 0);
                 const rect = gridComp && gridComp.coordinateSystem && gridComp.coordinateSystem.getRect();
                 if (!rect) return;
                 chart.setOption({
                     graphic: [
+                        {
+                            id: 'q1-shade',
+                            type: 'rect',
+                            left: xStart,
+                            top: rect.y,
+                            shape: { width: xMid - xStart, height: rect.height },
+                            style: { fill: 'rgba(8,34,86,0.04)' },
+                            silent: true,
+                            zlevel: -1,
+                            z: 0,
+                        },
+                        {
+                            id: 'q2-shade',
+                            type: 'rect',
+                            left: xMid,
+                            top: rect.y,
+                            shape: { width: xEnd - xMid, height: rect.height },
+                            style: { fill: 'rgba(38,88,253,0.06)' },
+                            silent: true,
+                            zlevel: -1,
+                            z: 0,
+                        },
                         {
                             id: 'q1-label',
                             type: 'text',
@@ -1565,15 +1590,7 @@
             const domAviation = DATA.monthly.domAviationCAAC;
             const railway = DATA.monthly.railway;
             const s0 = lineSeries(t('seriesHotelRev'), hotelRev, C.c04, true, true, -14);
-            // Shade Q1 (Jan–Mar) / partial Q2 (Apr–Jun); boundary at xAxis 2.5 (between Mar & Apr).
-            s0.markArea = {
-                silent: true,
-                data: [
-                    [{ xAxis: -0.5, itemStyle: { color: 'rgba(8,34,86,0.04)' } }, { xAxis: 2.5 }],
-                    [{ xAxis: 2.5, itemStyle: { color: 'rgba(38,88,253,0.06)' } }, { xAxis: 5.5 }],
-                ],
-            };
-
+            // Q1/Q2 background shades drawn in placeQuarterBoundary (pixel mid between Mar & Apr).
             const series = withHoverFocus([
                 s0,
                 lineSeries(t('seriesDomAv'), domAviation, C.c03, false, true, 0),
