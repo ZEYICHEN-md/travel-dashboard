@@ -1152,7 +1152,7 @@
         }
 
         // 底部滑块：经典 dataZoom 阴影；用隐藏首序列指定预览指标
-        const zoomShadowIndex = { 'weekly-hotel': 1, 'weekly-aviation': 1 };
+        const zoomShadowIndex = { 'weekly-hotel': 1, 'weekly-aviation': 0 };
 
         function weeklyDataZoom() {
             return [
@@ -1530,7 +1530,6 @@
                 const xJan = chart.convertToPixel({ xAxisIndex: 0 }, 0);
                 const xJun = chart.convertToPixel({ xAxisIndex: 0 }, 5);
                 if ([xMar, xApr, xJan, xJun].some(v => v == null || Number.isNaN(v))) return;
-                const xMid = (xMar + xApr) / 2;
                 const gridComp = chart.getModel().getComponent('grid', 0);
                 const rect = gridComp && gridComp.coordinateSystem && gridComp.coordinateSystem.getRect();
                 if (!rect) return;
@@ -1554,14 +1553,6 @@
                             silent: true,
                             z: 100,
                         },
-                        {
-                            id: 'q-boundary',
-                            type: 'line',
-                            shape: { x1: xMid, y1: rect.y, x2: xMid, y2: rect.y + rect.height },
-                            style: { stroke: 'rgba(8,34,86,0.35)', lineWidth: 1 },
-                            silent: true,
-                            z: 100,
-                        },
                     ],
                 });
             } catch (e) { /* ignore layout races */ }
@@ -1574,7 +1565,7 @@
             const domAviation = DATA.monthly.domAviationCAAC;
             const railway = DATA.monthly.railway;
             const s0 = lineSeries(t('seriesHotelRev'), hotelRev, C.c04, true, true, -14);
-            // Shade Q1 (Jan–Mar) / partial Q2 (Apr–Jun). Divider drawn between Mar & Apr in pixels.
+            // Shade Q1 (Jan–Mar) / partial Q2 (Apr–Jun); boundary at xAxis 2.5 (between Mar & Apr).
             s0.markArea = {
                 silent: true,
                 data: [
