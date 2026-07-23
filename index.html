@@ -987,6 +987,7 @@
                 Object.values(chartInstances).forEach(c => {
                     c.resize();
                     if (typeof c.__ytdRefresh === 'function') c.__ytdRefresh();
+                    if (typeof c.__qBoundaryRefresh === 'function') c.__qBoundaryRefresh();
                 });
             }, 100);
         }
@@ -1508,6 +1509,50 @@
         }
 
         // ============ QUARTERLY ============
+        function placeQuarterBoundary(chart) {
+            try {
+                const xMar = chart.convertToPixel({ xAxisIndex: 0 }, 2);
+                const xApr = chart.convertToPixel({ xAxisIndex: 0 }, 3);
+                const xJan = chart.convertToPixel({ xAxisIndex: 0 }, 0);
+                const xJun = chart.convertToPixel({ xAxisIndex: 0 }, 5);
+                if ([xMar, xApr, xJan, xJun].some(v => v == null || Number.isNaN(v))) return;
+                const xMid = (xMar + xApr) / 2;
+                const gridComp = chart.getModel().getComponent('grid', 0);
+                const rect = gridComp && gridComp.coordinateSystem && gridComp.coordinateSystem.getRect();
+                if (!rect) return;
+                chart.setOption({
+                    graphic: [
+                        {
+                            id: 'q1-label',
+                            type: 'text',
+                            style: { text: 'Q1', fill: C.c02, fontSize: 13, fontWeight: 700, textAlign: 'center' },
+                            left: (xJan + xMar) / 2,
+                            top: rect.y - 22,
+                            silent: true,
+                            z: 100,
+                        },
+                        {
+                            id: 'q2-label',
+                            type: 'text',
+                            style: { text: 'Q2', fill: C.c03, fontSize: 13, fontWeight: 700, textAlign: 'center' },
+                            left: (xApr + xJun) / 2,
+                            top: rect.y - 22,
+                            silent: true,
+                            z: 100,
+                        },
+                        {
+                            id: 'q-boundary',
+                            type: 'line',
+                            shape: { x1: xMid, y1: rect.y, x2: xMid, y2: rect.y + rect.height },
+                            style: { stroke: 'rgba(8,34,86,0.35)', lineWidth: 1 },
+                            silent: true,
+                            z: 100,
+                        },
+                    ],
+                });
+            } catch (e) { /* ignore layout races */ }
+        }
+
         function renderQuarterlyTrend() {
             const c = getChart('quarterly-trend');
             const months = localizeMonths(DATA.monthly.months);
@@ -1515,11 +1560,12 @@
             const domAviation = DATA.monthly.domAviationCAAC;
             const railway = DATA.monthly.railway;
             const s0 = lineSeries(t('seriesHotelRev'), hotelRev, C.c04, true, true, -14);
+            // Shade Q1 (Jan–Mar) / partial Q2 (Apr–Jun). Divider drawn between Mar & Apr in pixels.
             s0.markArea = {
                 silent: true,
                 data: [
-                    [{ xAxis: '1月', itemStyle: { color: 'rgba(8,34,86,0.04)' } }, { xAxis: '4月' }],
-                    [{ xAxis: '4月', itemStyle: { color: 'rgba(38,88,253,0.06)' } }, { xAxis: '6月' }],
+                    [{ xAxis: -0.5, itemStyle: { color: 'rgba(8,34,86,0.04)' } }, { xAxis: 2.5 }],
+                    [{ xAxis: 2.5, itemStyle: { color: 'rgba(38,88,253,0.06)' } }, { xAxis: 5.5 }],
                 ],
             };
 
@@ -1532,16 +1578,15 @@
                 ...baseOpts,
                 grid: { left: '4%', right: '8%', top: '14%', bottom: '10%', containLabel: true },
                 xAxis: { ...baseOpts.xAxis, data: months },
-                graphic: [
-                    { id: 'q1-label', type: 'text', left: '28%', top: '4%', style: { text: 'Q1', fill: C.c02, fontSize: 13, fontWeight: 700 } },
-                    { id: 'q2-label', type: 'text', left: '62%', top: '4%', style: { text: 'Q2', fill: C.c03, fontSize: 13, fontWeight: 700 } },
-                ],
                 series,
             });
-            attachExtrema(c, [hotelRev, domAviation, railway], [
-                { xAxis: '4月', lineStyle: { color: 'rgba(8,34,86,0.35)', type: 'solid', width: 1 }, label: { show: false } },
-            ]);
+            attachExtrema(c, [hotelRev, domAviation, railway]);
             bindSeriesToggles(c, series);
+            const refreshBoundary = () => placeQuarterBoundary(c);
+            c.__qBoundaryRefresh = refreshBoundary;
+            // Defer until coordinateSystem is ready (hidden-tab init / first paint).
+            setTimeout(refreshBoundary, 0);
+            setTimeout(refreshBoundary, 120);
         }
 
         function renderQuarterlyCompare() {
