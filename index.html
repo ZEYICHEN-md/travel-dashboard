@@ -1523,48 +1523,40 @@
         }
 
         // ============ QUARTERLY ============
-        function placeQuarterBoundary(chart) {
+        function placeQuarterShading(chart) {
             try {
-                const xMar = chart.convertToPixel({ xAxisIndex: 0 }, 2);
-                const xApr = chart.convertToPixel({ xAxisIndex: 0 }, 3);
-                const xJan = chart.convertToPixel({ xAxisIndex: 0 }, 0);
-                const xJun = chart.convertToPixel({ xAxisIndex: 0 }, 5);
-                const xStart = chart.convertToPixel({ xAxisIndex: 0 }, -0.5);
-                const xEnd = chart.convertToPixel({ xAxisIndex: 0 }, 5.5);
-                if ([xMar, xApr, xJan, xJun, xStart, xEnd].some(v => v == null || Number.isNaN(v))) return;
-                const xMid = (xMar + xApr) / 2;
+                const toX = (idx) => chart.convertToPixel({ xAxisIndex: 0 }, idx);
+                const xLeft = toX(-0.5);
+                const xQ1End = (toX(2) + toX(3)) / 2;   // between Mar & Apr
+                const xQ2End = (toX(5) + toX(6)) / 2;   // between Jun & Jul
+                const xQ3End = (toX(8) + toX(9)) / 2;   // between Sep & Oct
+                const xRight = toX(11.5);
+                if ([xLeft, xQ1End, xQ2End, xQ3End, xRight].some(v => v == null || Number.isNaN(v))) return;
                 const gridComp = chart.getModel().getComponent('grid', 0);
                 const rect = gridComp && gridComp.coordinateSystem && gridComp.coordinateSystem.getRect();
                 if (!rect) return;
+                const shades = [
+                    { id: 'q-shade-1', left: xLeft, right: xQ1End, color: 'rgba(8,34,86,0.04)' },
+                    { id: 'q-shade-2', left: xQ1End, right: xQ2End, color: 'rgba(38,88,253,0.06)' },
+                    { id: 'q-shade-3', left: xQ2End, right: xQ3End, color: 'rgba(8,34,86,0.04)' },
+                    { id: 'q-shade-4', left: xQ3End, right: xRight, color: 'rgba(38,88,253,0.06)' },
+                ];
                 chart.setOption({
                     graphic: [
-                        {
-                            id: 'q1-shade',
+                        ...shades.map(s => ({
+                            id: s.id,
                             type: 'rect',
-                            left: xStart,
-                            top: rect.y,
-                            shape: { width: xMid - xStart, height: rect.height },
-                            style: { fill: 'rgba(8,34,86,0.04)' },
-                            silent: true,
                             zlevel: -1,
-                            z: 0,
-                        },
-                        {
-                            id: 'q2-shade',
-                            type: 'rect',
-                            left: xMid,
-                            top: rect.y,
-                            shape: { width: xEnd - xMid, height: rect.height },
-                            style: { fill: 'rgba(38,88,253,0.06)' },
+                            shape: { x: s.left, y: rect.y, width: s.right - s.left, height: rect.height },
+                            style: { fill: s.color },
                             silent: true,
-                            zlevel: -1,
                             z: 0,
-                        },
+                        })),
                         {
                             id: 'q1-label',
                             type: 'text',
                             style: { text: 'Q1', fill: C.c02, fontSize: 13, fontWeight: 700, textAlign: 'center' },
-                            left: (xJan + xMar) / 2,
+                            left: (xLeft + xQ1End) / 2,
                             top: rect.y - 22,
                             silent: true,
                             z: 100,
@@ -1573,7 +1565,7 @@
                             id: 'q2-label',
                             type: 'text',
                             style: { text: 'Q2', fill: C.c03, fontSize: 13, fontWeight: 700, textAlign: 'center' },
-                            left: (xApr + xJun) / 2,
+                            left: (xQ1End + xQ2End) / 2,
                             top: rect.y - 22,
                             silent: true,
                             z: 100,
@@ -1590,7 +1582,8 @@
             const domAviation = DATA.monthly.domAviationCAAC;
             const railway = DATA.monthly.railway;
             const s0 = lineSeries(t('seriesHotelRev'), hotelRev, C.c04, true, true, -14);
-            // Q1/Q2 background shades drawn in placeQuarterBoundary (pixel mid between Mar & Apr).
+            // Quarter shading drawn in placeQuarterShading() — pixel midpoints between months.
+
             const series = withHoverFocus([
                 s0,
                 lineSeries(t('seriesDomAv'), domAviation, C.c03, false, true, 0),
@@ -1604,7 +1597,7 @@
             });
             attachExtrema(c, [hotelRev, domAviation, railway]);
             bindSeriesToggles(c, series);
-            const refreshBoundary = () => placeQuarterBoundary(c);
+            const refreshBoundary = () => placeQuarterShading(c);
             c.__qBoundaryRefresh = refreshBoundary;
             // Defer until coordinateSystem is ready (hidden-tab init / first paint).
             setTimeout(refreshBoundary, 0);
