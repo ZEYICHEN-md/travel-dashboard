@@ -263,7 +263,7 @@
             background: rgba(8, 34, 86, 0.018);
             border: 1px solid rgba(8, 34, 86, 0.06);
         }
-        /* 酒店 Color02 → 国内/航空 Color03 → 国际 Color04 */
+        /* 国内酒店 Color02 → 国内/航空 Color03 → 国际 Color04 */
         .q-sector--hotel { --sector-accent: var(--c02); }
         .q-sector--domestic,
         .q-sector--aviation { --sector-accent: var(--c03); }
@@ -710,19 +710,19 @@
             <div class="kpi-sector-block">
                 <div class="q-sector-grid q-sector-grid--2">
                     <div class="q-sector q-sector--hotel">
-                        <div class="q-sector-title" id="i18n-sector-hotel-w">酒店</div>
+                        <div class="q-sector-title" id="i18n-sector-hotel-w">国内酒店</div>
                         <div class="kpi-card">
-                            <div class="kpi-label" id="i18n-kpi-revpar">酒店 RevPAR（最新周）</div>
+                            <div class="kpi-label" id="i18n-kpi-revpar">国内酒店 RevPAR（最新周）</div>
                             <div class="kpi-value" id="kpi-revpar"></div>
                             <div class="kpi-sub" id="kpi-revpar-week"></div>
                         </div>
                         <div class="kpi-card">
-                            <div class="kpi-label" id="i18n-kpi-adr">酒店 ADR（最新周）</div>
+                            <div class="kpi-label" id="i18n-kpi-adr">国内酒店 ADR（最新周）</div>
                             <div class="kpi-value" id="kpi-adr"></div>
                             <div class="kpi-sub" id="kpi-adr-week"></div>
                         </div>
                         <div class="kpi-card">
-                            <div class="kpi-label" id="i18n-kpi-occ">酒店入住率（最新周）</div>
+                            <div class="kpi-label" id="i18n-kpi-occ">国内酒店入住率（最新周）</div>
                             <div class="kpi-value" id="kpi-occ"></div>
                             <div class="kpi-sub" id="kpi-occ-week"></div>
                         </div>
@@ -751,7 +751,7 @@
             <div class="chart-grid single">
                 <div class="chart-card">
                     <div class="chart-header">
-                    <div class="chart-title" id="i18n-chart-weekly-hotel">酒店周度指标（RevPAR / ADR / 入住率 同比）</div>
+                    <div class="chart-title" id="i18n-chart-weekly-hotel">国内酒店周度指标（RevPAR / ADR / 入住率 同比）</div>
                     <button class="chart-download" onclick="downloadChart('weekly-hotel')">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                         <span class="dl-text">下载图片</span>
@@ -777,7 +777,7 @@
             <div class="kpi-sector-block" id="monthly-kpi-row">
                 <div class="q-sector-grid">
                     <div class="q-sector q-sector--hotel">
-                        <div class="q-sector-title" id="i18n-sector-hotel-m">酒店</div>
+                        <div class="q-sector-title" id="i18n-sector-hotel-m">国内酒店</div>
                         <div class="kpi-card">
                             <div class="kpi-label" id="m-kpi-0-label"></div>
                             <div class="kpi-value" id="m-kpi-0-value"></div>
@@ -836,7 +836,7 @@
             <div class="chart-grid">
                 <div class="chart-card">
                     <div class="chart-header">
-                    <div class="chart-title" id="i18n-chart-monthly-hotel">酒店月度指标（RevPAR / ADR / 入住率 同比）</div>
+                    <div class="chart-title" id="i18n-chart-monthly-hotel">国内酒店月度指标（RevPAR / ADR / 入住率 同比）</div>
                     <button class="chart-download" onclick="downloadChart('monthly-hotel')">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                         <span class="dl-text">下载图片</span>
@@ -883,7 +883,7 @@
                 <div class="chart-title" id="i18n-chart-q-overview">Q1 各板块同比表现总览</div>
                 <div class="q-sector-grid">
                     <div class="q-sector q-sector--hotel">
-                        <div class="q-sector-title" id="i18n-sector-hotel">酒店</div>
+                        <div class="q-sector-title" id="i18n-sector-hotel">国内酒店</div>
                         <div class="kpi-card">
                             <div class="kpi-label" id="q-kpi-0-label"></div>
                             <div class="kpi-value" id="q-kpi-0-value"></div>
@@ -1608,7 +1608,9 @@
 
         function renderQuarterlyCompare() {
             const c = getChart('quarterly-compare');
-            const metrics = ['酒店\nRevPAR', '国内航空\n客运量', '铁路\n客运量', '国际客运\n(三大航)'];
+            const metrics = currentLang === 'zh'
+                ? ['国内酒店\nRevPAR', '国内航空\n客运量', '铁路\n客运量', '国际客运\n(三大航)']
+                : ['Domestic hotel\nRevPAR', 'Domestic air\npax', 'Railway\npax', 'Intl pax\n(Big3)'];
             const q1 = [DATA.quarterly.q1.hotelRevPAR, DATA.quarterly.q1.domAviationCAAC, DATA.quarterly.q1.railway, DATA.quarterly.q1.intlAviationBig3];
             const q2 = [DATA.quarterly.q2partial.hotelRevPAR, DATA.quarterly.q2partial.domAviationCAAC, DATA.quarterly.q2partial.railway, DATA.quarterly.q2partial.intlAviationBig3];
             const q1Color = C.c02;
@@ -2095,17 +2097,17 @@
             const prevLine = (arr, idx) =>
                 t('prevMonth') + ': ' + monthLabel(m.months[idx - 1] || '') + ' ' + fmtPct(prev(arr, idx));
             fillCard('m-kpi-', 0,
-                currentLang === 'zh' ? ('酒店 RevPAR（' + m.months[rev.index] + '）') : ('Hotel RevPAR (' + monthLabel(m.months[rev.index]) + ')'),
+                currentLang === 'zh' ? ('国内酒店 RevPAR（' + m.months[rev.index] + '）') : ('Domestic hotel RevPAR (' + monthLabel(m.months[rev.index]) + ')'),
                 rev.value,
                 prevLine(m.hotelRevPAR, rev.index)
             );
             fillCard('m-kpi-', 1,
-                currentLang === 'zh' ? ('酒店 ADR（' + m.months[adr.index] + '）') : ('Hotel ADR (' + monthLabel(m.months[adr.index]) + ')'),
+                currentLang === 'zh' ? ('国内酒店 ADR（' + m.months[adr.index] + '）') : ('Domestic hotel ADR (' + monthLabel(m.months[adr.index]) + ')'),
                 adr.value,
                 prevLine(m.hotelADR, adr.index)
             );
             fillCard('m-kpi-', 2,
-                currentLang === 'zh' ? ('酒店入住率（' + m.months[occ.index] + '）') : ('Hotel occupancy (' + monthLabel(m.months[occ.index]) + ')'),
+                currentLang === 'zh' ? ('国内酒店入住率（' + m.months[occ.index] + '）') : ('Domestic hotel occupancy (' + monthLabel(m.months[occ.index]) + ')'),
                 occ.value,
                 prevLine(m.hotelOccupancy, occ.index)
             );
@@ -2144,17 +2146,17 @@
         function updateQuarterlyKPI() {
             const q = DATA.quarterly.q1;
             fillCard('q-kpi-', 0,
-                currentLang === 'zh' ? '酒店 RevPAR（Q1）' : 'Hotel RevPAR (Q1)',
+                currentLang === 'zh' ? '国内酒店 RevPAR（Q1）' : 'Domestic hotel RevPAR (Q1)',
                 q.hotelRevPAR,
                 t('strSource')
             );
             fillCard('q-kpi-', 1,
-                currentLang === 'zh' ? '酒店 ADR（Q1）' : 'Hotel ADR (Q1)',
+                currentLang === 'zh' ? '国内酒店 ADR（Q1）' : 'Domestic hotel ADR (Q1)',
                 q.hotelADR,
                 t('strSource')
             );
             fillCard('q-kpi-', 2,
-                currentLang === 'zh' ? '酒店入住率（Q1）' : 'Hotel occupancy (Q1)',
+                currentLang === 'zh' ? '国内酒店入住率（Q1）' : 'Domestic hotel occupancy (Q1)',
                 q.hotelOccupancy,
                 t('strSource')
             );
