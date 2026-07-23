@@ -993,6 +993,10 @@
             const tabEl = document.querySelector(`.tab[onclick*="switchView('${view}')"]`);
             if (tabEl) tabEl.classList.add('active');
             if (typeof renderInsights === 'function') renderInsights();
+            if (view === 'quarterly') {
+                renderQuarterlyTrend();
+                renderQuarterlyCompare();
+            }
             setTimeout(() => {
                 Object.values(chartInstances).forEach(c => {
                     c.resize();
@@ -1864,6 +1868,17 @@
             chart.on('globalout', hideTag);
         }
 
+        function markLineSeriesPatch(chart, seriesIndex, markLine, extraOption) {
+            const seriesList = chart.getOption().series;
+            const count = Array.isArray(seriesList) ? seriesList.length : 0;
+            if (!count) return;
+            const payload = [];
+            for (let i = 0; i < count; i++) {
+                payload.push(i === seriesIndex ? { markLine } : {});
+            }
+            chart.setOption(Object.assign({ series: payload }, extraOption || {}));
+        }
+
         function attachExtrema(chart, arrays, extraMarkData, markSeriesIndex, opts) {
             const n = Math.max(...arrays.map(a => a.length), 0);
             const si = markSeriesIndex == null ? 0 : markSeriesIndex;
@@ -1890,10 +1905,7 @@
                     if (extraMarkData && extraMarkData.length) {
                         ml.data = ml.data.concat(extraMarkData);
                     }
-                    const seriesPayload = [];
-                    for (let i = 0; i < si; i++) seriesPayload.push({});
-                    seriesPayload.push({ markLine: ml });
-                    chart.setOption({ series: seriesPayload });
+                    markLineSeriesPatch(chart, si, ml);
                     requestAnimationFrame(function() {
                         upsertYtdAvgLabel(chart, avg, color, t(labelKey));
                     });
@@ -1905,13 +1917,7 @@
                 if (extraMarkData && extraMarkData.length) {
                     ml.data = ml.data.concat(extraMarkData);
                 }
-                const seriesPayload = [];
-                for (let i = 0; i < si; i++) seriesPayload.push({});
-                seriesPayload.push({ markLine: ml });
-                chart.setOption({
-                    series: seriesPayload,
-                    graphic: [{ id: 'ytd-avg-label', $action: 'remove' }],
-                });
+                markLineSeriesPatch(chart, si, ml);
             }
             chart.__ytdRefresh = mode === 'ytdAvg' ? refresh : null;
             chart.off('datazoom');
