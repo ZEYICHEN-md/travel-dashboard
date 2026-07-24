@@ -13,9 +13,9 @@ const INSIGHTS = {
       "quarterly": "2026-07-23"
     },
     "stale": {
-      "weekly": false,
-      "monthly": false,
-      "quarterly": false
+      "weekly": true,
+      "monthly": true,
+      "quarterly": true
     }
   },
   "weekly": {
@@ -194,22 +194,22 @@ const INSIGHTS = {
       },
       {
         "tag": "risk",
-        "title": "Q2 部分指标明显弱于 Q1",
-        "body": "Q2 部分均值（4–5 月）国内航空民航局口径约 <span class=\"num-highlight\">-4.0%</span>，低于 Q1 的约 <span class=\"num-highlight\">+5.5%</span>；国内酒店 RevPAR 部分均值约 <span class=\"num-highlight\">+3.2%</span>，较 Q1 的约 <span class=\"num-highlight\">+4.8%</span> 有所回落。国内航由正转负，是 Q1→Q2 变化里幅度较大的一项。",
+        "title": "Q2 指标明显弱于 Q1",
+        "body": "Q2（4–6 月各月平均）国内航空民航局口径约 <span class=\"num-highlight\">-5.2%</span>，低于 Q1 的约 <span class=\"num-highlight\">+5.5%</span>；铁路客运约 <span class=\"num-highlight\">+4.3%</span>，仍为正但低于 Q1。国内航由正转负，是 Q1→Q2 变化里幅度较大的一项。",
         "refs": [
-          "quarterly.q2partial.domAviationCAAC",
+          "quarterly.q2.domAviationCAAC",
           "quarterly.q1.domAviationCAAC",
-          "quarterly.q2partial.hotelRevPAR",
-          "quarterly.q1.hotelRevPAR"
+          "quarterly.q2.railway",
+          "quarterly.q1.railway"
         ]
       },
       {
         "tag": "outlook",
         "title": "暑期旺季能否扭转 Q2 偏弱开局",
-        "body": "按已有的 Q2 部分均值，国内航已转负、国内酒店动能低于 Q1。7–8 月旺季数据出来前，还不宜对下半年节奏下强结论。",
+        "body": "按 Q2 全季均值，国内航已转负、铁路增速低于 Q1。7–8 月旺季数据出来前，还不宜对下半年节奏下强结论。",
         "refs": [
-          "quarterly.q2partial.domAviationCAAC",
-          "quarterly.q2partial.hotelRevPAR"
+          "quarterly.q2.domAviationCAAC",
+          "quarterly.q2.railway"
         ]
       }
     ],
@@ -236,22 +236,22 @@ const INSIGHTS = {
       },
       {
         "tag": "risk",
-        "title": "Q2 partial metrics clearly softer than Q1",
-        "body": "Q2 partial (Apr–May avg) domestic air (CAAC) about <span class=\"num-highlight\">-4.0%</span>, below Q1 about <span class=\"num-highlight\">+5.5%</span>; domestic hotel RevPAR partial about <span class=\"num-highlight\">+3.2%</span>, down from Q1 about <span class=\"num-highlight\">+4.8%</span>. Domestic air’s swing from positive to negative was one of the larger Q1→Q2 moves.",
+        "title": "Q2 metrics clearly softer than Q1",
+        "body": "Q2 (Apr–Jun monthly avg) domestic air (CAAC) about <span class=\"num-highlight\">-5.2%</span>, below Q1 about <span class=\"num-highlight\">+5.5%</span>; railway pax about <span class=\"num-highlight\">+4.3%</span>, still positive but below Q1. Domestic air’s swing from positive to negative was one of the larger Q1→Q2 moves.",
         "refs": [
-          "quarterly.q2partial.domAviationCAAC",
+          "quarterly.q2.domAviationCAAC",
           "quarterly.q1.domAviationCAAC",
-          "quarterly.q2partial.hotelRevPAR",
-          "quarterly.q1.hotelRevPAR"
+          "quarterly.q2.railway",
+          "quarterly.q1.railway"
         ]
       },
       {
         "tag": "outlook",
         "title": "Can summer reverse a soft Q2 start",
-        "body": "On available Q2 partial averages, domestic air is negative and domestic hotel momentum is below Q1. Before July–August peak-season data arrive, it is still too early to draw firm conclusions on H2 pacing.",
+        "body": "On full Q2 averages, domestic air is negative and railway growth is below Q1. Before July–August peak-season data arrive, it is still too early to draw firm conclusions on H2 pacing.",
         "refs": [
-          "quarterly.q2partial.domAviationCAAC",
-          "quarterly.q2partial.hotelRevPAR"
+          "quarterly.q2.domAviationCAAC",
+          "quarterly.q2.railway"
         ]
       }
     ]

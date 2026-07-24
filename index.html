@@ -952,7 +952,7 @@
                 </div>
                 <div class="chart-card">
                     <div class="chart-header">
-                        <div class="chart-title" id="i18n-chart-q-compare">Q1 vs Q2 对比（Q2 为 4-5 月均值）</div>
+                        <div class="chart-title" id="i18n-chart-q-compare">Q1 vs Q2 对比（Q2 为 4–6 月各月同比平均）</div>
                         <button class="chart-download" onclick="downloadChart('quarterly-compare')">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                         <span class="dl-text">下载图片</span>
@@ -1606,20 +1606,27 @@
             setTimeout(refreshBoundary, 120);
         }
 
+        function quarterData(key) {
+            const q = DATA.quarterly || {};
+            return q[key] || q[key + 'partial'] || {};
+        }
+
         function renderQuarterlyCompare() {
             const c = getChart('quarterly-compare');
             const metrics = currentLang === 'zh'
                 ? ['国内酒店\nRevPAR', '国内航空\n客运量', '铁路\n客运量', '国际客运\n(三大航)']
                 : ['Domestic hotel\nRevPAR', 'Domestic air\npax', 'Railway\npax', 'Intl pax\n(Big3)'];
-            const q1 = [DATA.quarterly.q1.hotelRevPAR, DATA.quarterly.q1.domAviationCAAC, DATA.quarterly.q1.railway, DATA.quarterly.q1.intlAviationBig3];
-            const q2 = [DATA.quarterly.q2partial.hotelRevPAR, DATA.quarterly.q2partial.domAviationCAAC, DATA.quarterly.q2partial.railway, DATA.quarterly.q2partial.intlAviationBig3];
+            const q1 = quarterData('q1');
+            const q2 = quarterData('q2');
+            const q1Vals = [q1.hotelRevPAR, q1.domAviationCAAC, q1.railway, q1.intlAviationBig3];
+            const q2Vals = [q2.hotelRevPAR, q2.domAviationCAAC, q2.railway, q2.intlAviationBig3];
             const q1Color = C.c02;
             const q2Color = C.c03;
 
             const series = withHoverFocus([
                 {
                     name: 'Q1', type: 'bar',
-                    data: q1.map(v => ({
+                    data: q1Vals.map(v => ({
                         value: v,
                         itemStyle: barItemStyleForSign(q1Color, v),
                     })),
@@ -1630,8 +1637,8 @@
                     markLine: extremaMarkLine(null, null, true),
                 },
                 {
-                    name: currentLang==='zh' ? 'Q2 (4-5月均值)' : 'Q2 (Apr-May avg)', type: 'bar',
-                    data: q2.map(v => ({
+                    name: currentLang==='zh' ? 'Q2（4–6月均值）' : 'Q2 (Apr–Jun avg)', type: 'bar',
+                    data: q2Vals.map(v => ({
                         value: v,
                         itemStyle: barItemStyleForSign(q2Color, v),
                     })),
