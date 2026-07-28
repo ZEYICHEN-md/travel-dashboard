@@ -36,7 +36,8 @@ const DATA = {
       "6/21-6/27",
       "6/28-7/4",
       "7/5-7/11",
-      "7/12-7/18"
+      "7/12-7/18",
+      "7/19-7/25"
     ],
     "hotelOccupancy": [
       -0.11,
@@ -67,6 +68,7 @@ const DATA = {
       -0.058,
       -0.0404,
       -0.04829130531840953,
+      -0.042,
       null
     ],
     "hotelADR": [
@@ -98,6 +100,7 @@ const DATA = {
       -0.001,
       -0.0136,
       -0.017881429227387335,
+      -0.013,
       null
     ],
     "hotelRevPAR": [
@@ -129,6 +132,7 @@ const DATA = {
       -0.059,
       -0.0534,
       -0.06530921698744752,
+      -0.054,
       null
     ],
     "aviationPax": [
@@ -160,6 +164,7 @@ const DATA = {
       -0.04,
       -0.02,
       -0.01,
+      0.06,
       0.06
     ],
     "aviationTicket": [
@@ -191,7 +196,8 @@ const DATA = {
       -0.09,
       -0.07,
       -0.08,
-      -0.07
+      -0.07,
+      -0.06
     ],
     "aviationFlight": [
       -0.03,
@@ -222,6 +228,7 @@ const DATA = {
       -0.04,
       -0.03,
       -0.04,
+      0.03,
       0.03
     ]
   },
@@ -274,7 +281,7 @@ const DATA = {
       0.013,
       0.057,
       0.008,
-      null,
+      0,
       null,
       null,
       null,
@@ -377,21 +384,22 @@ const DATA = {
       "railway": 0.05666666666666667,
       "intlAviationCAAC": 0.10307234886025762,
       "intlAviationBig3": 0.12787371291299143,
-      "intlCapacity": -0.09266666666666667
+      "intlCapacity": -0.09625
     },
     "q2": {
       "domAviationCAAC": -0.052,
-      "domAviationBig3": -0.0602,
-      "railway": 0.04256666666666667,
-      "intlAviationCAAC": 0.012,
-      "intlAviationBig3": 0.02,
-      "intlCapacity": -0.13999999999999999
+      "domAviationBig3": -0.06017196916967904,
+      "railway": 0.04615397862795234,
+      "intlAviationCAAC": 0.02732470941132359,
+      "intlAviationBig3": 0.012213310171963032,
+      "intlCapacity": -0.13999999999999999,
+      "hotelRevPAR": 0.021666666666666667
     }
   },
   "meta": {
-    "dataUpdate": "2026-07-23",
+    "dataUpdate": "2026-07-28",
     "dataSource": "STR、民航局、三大航、国铁、航班管家、飞常准",
     "compareBase": "同比2025年（国际航班运力为同比2019年）",
-    "sourceExcel": "20260723_国内行业数据.xlsx"
+    "sourceExcel": "国内行业数据_0728.xlsx"
   }
 };
