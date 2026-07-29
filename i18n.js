@@ -142,6 +142,12 @@ function t(key) {
   return pack[key] != null ? pack[key] : (I18N.zh[key] != null ? I18N.zh[key] : key);
 }
 
+function sectorOverviewTitle(scopeLabel) {
+  return currentLang === 'zh'
+    ? scopeLabel + ' 各板块同比表现总览'
+    : scopeLabel + ' sector YoY overview';
+}
+
 function monthLabel(raw) {
   const m = String(raw).match(/^(\d{1,2})月$/);
   if (!m) return raw;
@@ -305,7 +311,6 @@ function applyStaticI18n() {
     'i18n-chart-monthly-dom-av': 'chartMonthlyDomAv',
     'i18n-chart-monthly-railway': 'chartMonthlyRailway',
     'i18n-chart-monthly-intl': 'chartMonthlyIntl',
-    'i18n-chart-q-overview': 'chartQOverview',
     'i18n-chart-q-trend': 'chartQTrend',
     'i18n-chart-q-compare': 'chartQCompare',
     'i18n-sector-hotel': 'sectorHotel',

@@ -244,6 +244,9 @@
         .q-overview-block > .chart-title {
             margin-bottom: 16px;
         }
+        .kpi-sector-block {
+            margin-bottom: 20px;
+        }
         .q-sector-grid {
             display: grid;
             grid-template-columns: repeat(3, minmax(270px, 340px));
@@ -707,7 +710,8 @@
     <div class="container">
         <!-- ==================== WEEKLY VIEW ==================== -->
         <div id="view-weekly" class="view active">
-            <div class="kpi-sector-block">
+            <div class="q-overview-block" id="weekly-kpi-row">
+                <div class="chart-title" id="i18n-chart-weekly-overview">最新周各板块同比表现总览</div>
                 <div class="q-sector-grid q-sector-grid--2">
                     <div class="q-sector q-sector--hotel">
                         <div class="q-sector-title" id="i18n-sector-hotel-w">国内酒店</div>
@@ -774,7 +778,8 @@
 
         <!-- ==================== MONTHLY VIEW ==================== -->
         <div id="view-monthly" class="view">
-            <div class="kpi-sector-block" id="monthly-kpi-row">
+            <div class="q-overview-block" id="monthly-kpi-row">
+                <div class="chart-title" id="i18n-chart-monthly-overview">最新月度各板块同比表现总览</div>
                 <div class="q-sector-grid">
                     <div class="q-sector q-sector--hotel">
                         <div class="q-sector-title" id="i18n-sector-hotel-m">国内酒店</div>
@@ -880,7 +885,7 @@
         <!-- ==================== QUARTERLY VIEW ==================== -->
         <div id="view-quarterly" class="view">
             <div class="q-overview-block" id="quarterly-kpi-row">
-                <div class="chart-title" id="i18n-chart-q-overview">Q1 各板块同比表现总览</div>
+                <div class="chart-title" id="i18n-chart-q-overview">Q2 各板块同比表现总览</div>
                 <div class="q-sector-grid">
                     <div class="q-sector q-sector--hotel">
                         <div class="q-sector-title" id="i18n-sector-hotel">国内酒店</div>
@@ -2057,6 +2062,34 @@
             if (sb) sb.textContent = sub || '';
         }
 
+        function latestSeriesIndex(seriesList) {
+            let maxIdx = -1;
+            for (const arr of seriesList) {
+                const hit = lastNonNull(arr);
+                if (hit.index > maxIdx) maxIdx = hit.index;
+            }
+            return maxIdx;
+        }
+
+        function latestQuarterInfo() {
+            const qd = DATA.quarterly || {};
+            for (const key of ['q4', 'q3', 'q2', 'q1']) {
+                const q = qd[key];
+                if (!q) continue;
+                if (Object.values(q).some(v => v != null)) {
+                    return { key, label: key.toUpperCase(), data: q };
+                }
+            }
+            return { key: 'q1', label: 'Q1', data: qd.q1 || {} };
+        }
+
+        function setOverviewTitle(id, scopeLabel) {
+            const el = document.getElementById(id);
+            if (el && typeof sectorOverviewTitle === 'function') {
+                el.textContent = sectorOverviewTitle(scopeLabel);
+            }
+        }
+
         function updateKPI() {
             const occ = lastNonNull(DATA.weekly.hotelOccupancy);
             document.getElementById('kpi-occ').textContent = fmtPct(occ.value);
@@ -2087,6 +2120,17 @@
             document.getElementById('kpi-flight').textContent = fmtPct(flt.value);
             document.getElementById('kpi-flight').className = 'kpi-value ' + (flt.value >= 0 ? 'up' : 'down');
             document.getElementById('kpi-flight-week').textContent = DATA.weekly.weeks[flt.index] + ' ' + t('weekYoY');
+
+            const wIdx = latestSeriesIndex([
+                DATA.weekly.hotelOccupancy,
+                DATA.weekly.hotelADR,
+                DATA.weekly.hotelRevPAR,
+                DATA.weekly.aviationPax,
+                DATA.weekly.aviationTicket,
+                DATA.weekly.aviationFlight,
+            ]);
+            const weekLabel = wIdx >= 0 ? DATA.weekly.weeks[wIdx] : (currentLang === 'zh' ? '最新周' : 'Latest week');
+            setOverviewTitle('i18n-chart-weekly-overview', weekLabel);
         }
 
         function updateMonthlyKPI() {
@@ -2148,52 +2192,69 @@
                 cap.value,
                 t('vs2019')
             );
+
+            const mIdx = latestSeriesIndex([
+                m.hotelOccupancy,
+                m.hotelADR,
+                m.hotelRevPAR,
+                m.domAviationCAAC,
+                m.domAviationBig3,
+                m.railway,
+                m.intlAviationCAAC,
+                m.intlAviationBig3,
+                m.intlCapacity,
+            ]);
+            const monthScope = mIdx >= 0
+                ? (currentLang === 'zh' ? m.months[mIdx] : monthLabel(m.months[mIdx]))
+                : (currentLang === 'zh' ? '最新月度' : 'Latest month');
+            setOverviewTitle('i18n-chart-monthly-overview', monthScope);
         }
 
         function updateQuarterlyKPI() {
-            const q = DATA.quarterly.q1;
+            const { label: ql, data: q } = latestQuarterInfo();
+            setOverviewTitle('i18n-chart-q-overview', ql);
             fillCard('q-kpi-', 0,
-                currentLang === 'zh' ? '国内酒店 RevPAR（Q1）' : 'Domestic hotel RevPAR (Q1)',
+                currentLang === 'zh' ? ('国内酒店 RevPAR（' + ql + '）') : ('Domestic hotel RevPAR (' + ql + ')'),
                 q.hotelRevPAR,
                 t('strSource')
             );
             fillCard('q-kpi-', 1,
-                currentLang === 'zh' ? '国内酒店 ADR（Q1）' : 'Domestic hotel ADR (Q1)',
+                currentLang === 'zh' ? ('国内酒店 ADR（' + ql + '）') : ('Domestic hotel ADR (' + ql + ')'),
                 q.hotelADR,
                 t('strSource')
             );
             fillCard('q-kpi-', 2,
-                currentLang === 'zh' ? '国内酒店入住率（Q1）' : 'Domestic hotel occupancy (Q1)',
+                currentLang === 'zh' ? ('国内酒店入住率（' + ql + '）') : ('Domestic hotel occupancy (' + ql + ')'),
                 q.hotelOccupancy,
                 t('strSource')
             );
             fillCard('q-kpi-', 3,
-                currentLang === 'zh' ? '国内航空客运量（Q1 · 民航局）' : 'Domestic air pax (Q1 · CAAC)',
+                currentLang === 'zh' ? ('国内航空客运量（' + ql + ' · 民航局）') : ('Domestic air pax (' + ql + ' · CAAC)'),
                 q.domAviationCAAC,
                 currentLang === 'zh' ? '民航局口径' : 'CAAC'
             );
             fillCard('q-kpi-', 4,
-                currentLang === 'zh' ? '国内航空客运量（Q1 · 三大航）' : 'Domestic air pax (Q1 · Big3)',
+                currentLang === 'zh' ? ('国内航空客运量（' + ql + ' · 三大航）') : ('Domestic air pax (' + ql + ' · Big3)'),
                 q.domAviationBig3,
                 currentLang === 'zh' ? '三大航口径' : 'Big3'
             );
             fillCard('q-kpi-', 5,
-                currentLang === 'zh' ? '铁路客运量（Q1）' : 'Railway pax (Q1)',
+                currentLang === 'zh' ? ('铁路客运量（' + ql + '）') : ('Railway pax (' + ql + ')'),
                 q.railway,
                 t('railSource')
             );
             fillCard('q-kpi-', 6,
-                currentLang === 'zh' ? '国际航线客运量（Q1 · 民航局）' : 'Intl air pax (Q1 · CAAC)',
+                currentLang === 'zh' ? ('国际航线客运量（' + ql + ' · 民航局）') : ('Intl air pax (' + ql + ' · CAAC)'),
                 q.intlAviationCAAC,
                 t('crossBorder')
             );
             fillCard('q-kpi-', 7,
-                currentLang === 'zh' ? '国际航线客运量（Q1 · 三大航）' : 'Intl air pax (Q1 · Big3)',
+                currentLang === 'zh' ? ('国际航线客运量（' + ql + ' · 三大航）') : ('Intl air pax (' + ql + ' · Big3)'),
                 q.intlAviationBig3,
                 t('crossBorder')
             );
             fillCard('q-kpi-', 8,
-                currentLang === 'zh' ? '国际航班运力（Q1 · vs 2019）' : 'Intl capacity (Q1 · vs 2019)',
+                currentLang === 'zh' ? ('国际航班运力（' + ql + ' · vs 2019）') : ('Intl capacity (' + ql + ' · vs 2019)'),
                 q.intlCapacity,
                 t('vs2019')
             );
