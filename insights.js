@@ -8,80 +8,106 @@ const INSIGHTS = {
   "meta": {
     "basedOnTravelJsonUpdatedAt": "2026-07-28",
     "confirmedAt": {
-      "weekly": "2026-07-23",
-      "monthly": "2026-07-23",
-      "quarterly": "2026-07-23"
+      "weekly": "2026-08-03",
+      "monthly": "2026-08-03",
+      "quarterly": "2026-08-03"
     },
     "stale": {
-      "weekly": true,
-      "monthly": true,
-      "quarterly": true
+      "weekly": false,
+      "monthly": false,
+      "quarterly": false
     }
   },
   "weekly": {
     "zh": [
       {
-        "tag": "risk",
-        "title": "国内酒店 RevPAR 连续走弱",
-        "body": "最新有数周（7/5-7/11）国内酒店 RevPAR 同比 <span class=\"num-highlight\">-6.5%</span>，入住率 <span class=\"num-highlight\">-4.8%</span>、ADR <span class=\"num-highlight\">-1.8%</span>；前一周（6/28-7/4）RevPAR 也是 <span class=\"num-highlight\">-5.3%</span>。入住率与 ADR 同步为负，RevPAR 走弱并非只由单一分项造成。",
+        "tag": "highlight",
+        "title": "客运量连续两周同比转正并走强",
+        "body": "7/12-7/18、7/19-7/25 国内航空客运量同比均约 <span class=\"num-highlight\">+6.0%</span>，客运航班量约 <span class=\"num-highlight\">+3.0%</span>。券商监测称受中小学放假偏晚影响，暑运客流约在 7 月第二周才同比转正并随后走强，与本表自 7/12 起连续两周转正的节奏一致；另有外部窗口 7/15-7/21（与上述两周部分重叠）旅客运输量同比约 +7.5%。这更像旺季启动偏晚后的阶段性放量，能否延续到 8 月仍需后续周度确认。",
         "refs": [
-          "weekly.hotelRevPAR@7/5-7/11",
-          "weekly.hotelOccupancy@7/5-7/11",
-          "weekly.hotelADR@7/5-7/11",
-          "weekly.hotelRevPAR@6/28-7/4"
+          "weekly.aviationPax@7/12-7/18",
+          "weekly.aviationPax@7/19-7/25",
+          "weekly.aviationFlight@7/19-7/25"
         ]
       },
       {
         "tag": "risk",
-        "title": "机票票价与航班量双弱",
-        "body": "7/5-7/11 机票票价同比 <span class=\"num-highlight\">-8.0%</span>，客运航班量 <span class=\"num-highlight\">-4.0%</span>；自 6/21-6/27 起票价已连续三周为负，客运量则回升至约 <span class=\"num-highlight\">-1.0%</span>。近周呈现「客运量降幅收窄、票价与航班量仍偏弱」的组合。",
+        "title": "票价仍深负，量增价弱未解",
+        "body": "同两周机票票价同比约 <span class=\"num-highlight\">-7.0%</span>、<span class=\"num-highlight\">-6.0%</span>，与客运量转正形成鲜明反差。客流转正之后，券商仍估算国内含油票价同比降近一成，指向量起来后定价依旧承压；行业报道亦称暑运上半段客流改善后票价仍弱于往年同期。收益侧弱于客运量，是否只是旺季前半段的价格竞争，要看后续周度票价能否随客流回升。",
         "refs": [
-          "weekly.aviationTicket@7/5-7/11",
-          "weekly.aviationFlight@7/5-7/11",
-          "weekly.aviationPax@7/5-7/11",
-          "weekly.aviationTicket@6/21-6/27"
+          "weekly.aviationTicket@7/12-7/18",
+          "weekly.aviationTicket@7/19-7/25",
+          "weekly.aviationPax@7/19-7/25"
+        ]
+      },
+      {
+        "tag": "risk",
+        "title": "酒店 RevPAR 仍负，但最新一周收窄",
+        "body": "7/12-7/18 国内酒店 RevPAR 同比 <span class=\"num-highlight\">-5.4%</span>（入住率 <span class=\"num-highlight\">-4.2%</span>、ADR <span class=\"num-highlight\">-1.3%</span>）；补数后 7/19-7/25 收窄至 <span class=\"num-highlight\">-2.0%</span>（入住率 <span class=\"num-highlight\">-1.2%</span>、ADR <span class=\"num-highlight\">-0.7%</span>）。两周同比仍为负，但最新一周降幅明显小于前一周。公开监测缺少与 7/19-7/25 完全对齐的外部读数，故不做单周事件归因；后续看收窄能否延续。",
+        "refs": [
+          "weekly.hotelRevPAR@7/12-7/18",
+          "weekly.hotelOccupancy@7/12-7/18",
+          "weekly.hotelADR@7/12-7/18",
+          "weekly.hotelRevPAR@7/19-7/25",
+          "weekly.hotelOccupancy@7/19-7/25",
+          "weekly.hotelADR@7/19-7/25"
         ]
       },
       {
         "tag": "outlook",
-        "title": "客运量降幅收窄，暑期仍待确认",
-        "body": "客运量同比从 5/31-6/06 的约 <span class=\"num-highlight\">-10%</span> 收窄到近周 <span class=\"num-highlight\">-1%</span>。降幅已明显收窄，但能否在 7 月中下旬稳住，仍需后续周度数据确认。",
+        "title": "看客流走强后票价与酒店能否跟上",
+        "body": "近两周客运量已站上约 <span class=\"num-highlight\">+6%</span>，但同窗口票价仍约 <span class=\"num-highlight\">-6%～-7%</span>；酒店侧 7/19-7/25 RevPAR 虽仍为负（约 <span class=\"num-highlight\">-2.0%</span>），但较 7/12-7/18 的 <span class=\"num-highlight\">-5.4%</span> 已收窄。后续关键是客运量走强能否带动票价同步修复，以及酒店降幅能否继续收窄。",
         "refs": [
-          "weekly.aviationPax@5/31-6/06",
-          "weekly.aviationPax@7/5-7/11"
+          "weekly.aviationPax@7/19-7/25",
+          "weekly.aviationTicket@7/19-7/25",
+          "weekly.hotelRevPAR@7/19-7/25",
+          "weekly.hotelRevPAR@7/12-7/18"
         ]
       }
     ],
     "en": [
       {
-        "tag": "risk",
-        "title": "Domestic hotel RevPAR keeps softening",
-        "body": "Latest week with data (7/5–7/11): domestic hotel RevPAR <span class=\"num-highlight\">-6.5%</span> YoY, occupancy <span class=\"num-highlight\">-4.8%</span>, ADR <span class=\"num-highlight\">-1.8%</span>; prior week (6/28–7/4) RevPAR was also <span class=\"num-highlight\">-5.3%</span>. Both occupancy and ADR were negative, so the RevPAR decline was not driven by a single component alone.",
+        "tag": "highlight",
+        "title": "Pax positive two straight weeks and firming",
+        "body": "7/12–7/18 and 7/19–7/25 domestic air pax were both about <span class=\"num-highlight\">+6.0%</span> YoY, with passenger flights about <span class=\"num-highlight\">+3.0%</span>. Broker monitoring links the late school break to pax turning YoY positive around the second week of July and then strengthening — consistent with this table’s two positive weeks from 7/12; a partially overlapping external window (7/15–7/21) shows pax about +7.5% YoY. This looks more like a delayed peak-season ramp than a full trend shift; whether it holds into August still needs weekly confirmation.",
         "refs": [
-          "weekly.hotelRevPAR@7/5-7/11",
-          "weekly.hotelOccupancy@7/5-7/11",
-          "weekly.hotelADR@7/5-7/11",
-          "weekly.hotelRevPAR@6/28-7/4"
+          "weekly.aviationPax@7/12-7/18",
+          "weekly.aviationPax@7/19-7/25",
+          "weekly.aviationFlight@7/19-7/25"
         ]
       },
       {
         "tag": "risk",
-        "title": "Airfares and flights both weak",
-        "body": "7/5–7/11 airfares <span class=\"num-highlight\">-8.0%</span> YoY and passenger flights <span class=\"num-highlight\">-4.0%</span>; fares have been negative for three weeks since 6/21–6/27, while pax improved to about <span class=\"num-highlight\">-1.0%</span>. Recent weeks show narrower pax declines alongside still-soft fares and flight volume.",
+        "title": "Fares still deeply negative; volume–price gap persists",
+        "body": "Over the same two weeks, airfares were about <span class=\"num-highlight\">-7.0%</span> and <span class=\"num-highlight\">-6.0%</span> YoY — a sharp contrast to positive pax. After pax turned up, brokers still estimate domestic fares including fuel down nearly 10% YoY, and industry reports say fares stayed softer than last year even as summer traffic improved. Revenue is lagging volume; whether this is only early-peak price competition depends on whether weekly fares recover with traffic.",
         "refs": [
-          "weekly.aviationTicket@7/5-7/11",
-          "weekly.aviationFlight@7/5-7/11",
-          "weekly.aviationPax@7/5-7/11",
-          "weekly.aviationTicket@6/21-6/27"
+          "weekly.aviationTicket@7/12-7/18",
+          "weekly.aviationTicket@7/19-7/25",
+          "weekly.aviationPax@7/19-7/25"
+        ]
+      },
+      {
+        "tag": "risk",
+        "title": "Hotel RevPAR still negative, but latest week narrowed",
+        "body": "7/12–7/18 domestic hotel RevPAR was <span class=\"num-highlight\">-5.4%</span> YoY (occupancy <span class=\"num-highlight\">-4.2%</span>, ADR <span class=\"num-highlight\">-1.3%</span>); after the fill, 7/19–7/25 narrowed to <span class=\"num-highlight\">-2.0%</span> (occupancy <span class=\"num-highlight\">-1.2%</span>, ADR <span class=\"num-highlight\">-0.7%</span>). Both weeks are still negative YoY, but the latest week is clearly less weak than the prior one. We lack public monitoring fully aligned to 7/19–7/25 for single-week attribution; watch whether the narrowing continues.",
+        "refs": [
+          "weekly.hotelRevPAR@7/12-7/18",
+          "weekly.hotelOccupancy@7/12-7/18",
+          "weekly.hotelADR@7/12-7/18",
+          "weekly.hotelRevPAR@7/19-7/25",
+          "weekly.hotelOccupancy@7/19-7/25",
+          "weekly.hotelADR@7/19-7/25"
         ]
       },
       {
         "tag": "outlook",
-        "title": "Pax decline narrows; summer still TBD",
-        "body": "Pax YoY improved from about <span class=\"num-highlight\">-10%</span> (5/31–6/06) to <span class=\"num-highlight\">-1%</span> in the latest week. The narrowing is clear, but whether mid/late-July weekly prints can hold still needs confirmation.",
+        "title": "Whether stronger pax lifts fares and hotels",
+        "body": "Recent weeks show pax about <span class=\"num-highlight\">+6%</span>, but fares still about <span class=\"num-highlight\">-6% to -7%</span> in the same window; hotel RevPAR for 7/19–7/25 is still negative (about <span class=\"num-highlight\">-2.0%</span>) but improved from <span class=\"num-highlight\">-5.4%</span> on 7/12–7/18. The key is whether stronger traffic pulls fares and hotel revenue along, and whether hotel declines keep narrowing.",
         "refs": [
-          "weekly.aviationPax@5/31-6/06",
-          "weekly.aviationPax@7/5-7/11"
+          "weekly.aviationPax@7/19-7/25",
+          "weekly.aviationTicket@7/19-7/25",
+          "weekly.hotelRevPAR@7/19-7/25",
+          "weekly.hotelRevPAR@7/12-7/18"
         ]
       }
     ]
@@ -89,18 +115,9 @@ const INSIGHTS = {
   "monthly": {
     "zh": [
       {
-        "tag": "highlight",
-        "title": "铁路客运仍为正，但增速放缓",
-        "body": "1–6 月铁路客运量同比持续为正；5 月 <span class=\"num-highlight\">+1.9%</span>，6 月回落到 <span class=\"num-highlight\">+0.4%</span>。正增长仍在，但 5 到 6 月增速已明显放慢。",
-        "refs": [
-          "monthly.railway@5月",
-          "monthly.railway@6月"
-        ]
-      },
-      {
         "tag": "risk",
-        "title": "国内航空 5–6 月持续承压",
-        "body": "民航局口径国内客运量 5 月同比 <span class=\"num-highlight\">-7.8%</span>，6 月仍为 <span class=\"num-highlight\">-7.1%</span>；三大航 6 月约 <span class=\"num-highlight\">-7.8%</span>（5 月约 -9.3%）。两口径连续两月深度为负，6 月相对 5 月未见明显收窄。",
+        "title": "国内航空 5–6 月连续深负",
+        "body": "民航局口径国内客运量 5 月同比 <span class=\"num-highlight\">-7.8%</span>、6 月 <span class=\"num-highlight\">-7.1%</span>；三大航 6 月约 <span class=\"num-highlight\">-7.8%</span>。对应时段的行业监测显示：5 月上市航司国内运力投放约同比 -6%，主因是 Q2 高油价下主动收缩低效航班，淡季需求亦偏弱。该成本冲击锚定在 5–6 月；7 月及以后的油价回落属于后续月份，不能用来解释本条的 5–6 月读数，只能作为下一观察点。",
         "refs": [
           "monthly.domAviationCAAC@5月",
           "monthly.domAviationCAAC@6月",
@@ -109,39 +126,29 @@ const INSIGHTS = {
       },
       {
         "tag": "risk",
-        "title": "国际客运 6 月由正转弱",
-        "body": "国际航线客运量（出入境）6 月民航局口径同比 <span class=\"num-highlight\">-2.0%</span>，三大航约 <span class=\"num-highlight\">-0.2%</span>；5 月尚接近持平或小幅为正。国际航班运力（vs 2019）最新仍停在 5 月 <span class=\"num-highlight\">-15.0%</span>，6 月运力读数尚未披露。",
+        "title": "国际运力相对 2019 缺口仍深",
+        "body": "国际航班运力（vs 2019）5 月 <span class=\"num-highlight\">-15.0%</span>、6 月进一步至 <span class=\"num-highlight\">-16.3%</span>；国际客运量 6 月民航局口径约 <span class=\"num-highlight\">-2.0%</span>。相对 2019 的运力缺口在 5–6 月持续存在，更宜视为结构性恢复不足，而非某一周事件冲击；后续仍看国际增班与入境需求的月度转化。",
         "refs": [
-          "monthly.intlAviationCAAC@6月",
-          "monthly.intlAviationBig3@6月",
-          "monthly.intlCapacity@5月"
+          "monthly.intlCapacity@5月",
+          "monthly.intlCapacity@6月",
+          "monthly.intlAviationCAAC@6月"
         ]
       },
       {
         "tag": "outlook",
-        "title": "国内酒店 6 月与暑期月度仍是关键观察点",
-        "body": "国内酒店 RevPAR 最新月度仍停在 5 月 <span class=\"num-highlight\">+0.8%</span>；国内航已连续两月深负，国际客运 6 月转弱。国内酒店 6 月读数尚未公布，是下一步需要优先核对的空缺。",
+        "title": "酒店 6 月近乎持平，7 月月度是验证点",
+        "body": "国内酒店 RevPAR 6 月同比约 <span class=\"num-highlight\">-0.4%</span>，由正转微负；国内航 5–6 月仍深负。6 月月度酒店读数本身接近持平，不能直接等同于 7 月周度酒店走弱；7 月月度公布后，才能核对暑期月度层面的入住与房价是否同步承压。",
         "refs": [
-          "monthly.hotelRevPAR@5月",
-          "monthly.domAviationCAAC@6月",
-          "monthly.intlAviationCAAC@6月"
+          "monthly.hotelRevPAR@6月",
+          "monthly.domAviationCAAC@6月"
         ]
       }
     ],
     "en": [
       {
-        "tag": "highlight",
-        "title": "Rail pax still positive, slowing",
-        "body": "Railway pax YoY stayed positive through Jan–Jun; May <span class=\"num-highlight\">+1.9%</span>, June <span class=\"num-highlight\">+0.4%</span>. Growth remains positive, but the pace slowed noticeably from May to June.",
-        "refs": [
-          "monthly.railway@5月",
-          "monthly.railway@6月"
-        ]
-      },
-      {
         "tag": "risk",
-        "title": "Domestic air pressured in May–Jun",
-        "body": "CAAC domestic pax was <span class=\"num-highlight\">-7.8%</span> YoY in May and <span class=\"num-highlight\">-7.1%</span> in June; Big3 June about <span class=\"num-highlight\">-7.8%</span> (May about -9.3%). Both sources were deeply negative for two straight months, with no clear narrowing in June.",
+        "title": "Domestic air deeply negative in May–Jun",
+        "body": "CAAC domestic pax was <span class=\"num-highlight\">-7.8%</span> YoY in May and <span class=\"num-highlight\">-7.1%</span> in June; Big3 June about <span class=\"num-highlight\">-7.8%</span>. Period-aligned monitoring shows listed carriers cut domestic capacity about -6% YoY in May amid Q2 high fuel prices and soft off-season demand. That cost shock is anchored in May–Jun; July fuel relief is a later-month watchpoint, not an explanation for these prints.",
         "refs": [
           "monthly.domAviationCAAC@5月",
           "monthly.domAviationCAAC@6月",
@@ -150,22 +157,21 @@ const INSIGHTS = {
       },
       {
         "tag": "risk",
-        "title": "Intl pax turned weaker in June",
-        "body": "Intl route pax (cross-border) was <span class=\"num-highlight\">-2.0%</span> YoY (CAAC) and about <span class=\"num-highlight\">-0.2%</span> (Big3) in June, after near-flat/slightly positive May prints. Intl capacity (vs 2019) is still latest at May <span class=\"num-highlight\">-15.0%</span>; June capacity is not yet disclosed.",
+        "title": "Intl capacity gap vs 2019 remains wide",
+        "body": "Intl capacity (vs 2019) was <span class=\"num-highlight\">-15.0%</span> in May and <span class=\"num-highlight\">-16.3%</span> in June; CAAC intl pax in June about <span class=\"num-highlight\">-2.0%</span>. The vs-2019 capacity shortfall persisted through May–Jun — more structural under-recovery than a one-week shock. Next watch: intl add-backs and inbound demand conversion on monthly data.",
         "refs": [
-          "monthly.intlAviationCAAC@6月",
-          "monthly.intlAviationBig3@6月",
-          "monthly.intlCapacity@5月"
+          "monthly.intlCapacity@5月",
+          "monthly.intlCapacity@6月",
+          "monthly.intlAviationCAAC@6月"
         ]
       },
       {
         "tag": "outlook",
-        "title": "Domestic hotel June and summer months are key gaps",
-        "body": "Domestic hotel RevPAR is still latest at May <span class=\"num-highlight\">+0.8%</span>; domestic air has been deeply negative for two months and intl pax weakened in June. June domestic hotel RevPAR is not yet published and is the next priority gap to check.",
+        "title": "June hotels nearly flat; July monthly is the test",
+        "body": "Domestic hotel RevPAR in June was about <span class=\"num-highlight\">-0.4%</span> YoY — barely negative after turning from positive; domestic air stayed deeply negative in May–Jun. June monthly hotels are not the same as July weekly softness; July monthly prints will show whether summer occupancy and rates are under pressure at the month level.",
         "refs": [
-          "monthly.hotelRevPAR@5月",
-          "monthly.domAviationCAAC@6月",
-          "monthly.intlAviationCAAC@6月"
+          "monthly.hotelRevPAR@6月",
+          "monthly.domAviationCAAC@6月"
         ]
       }
     ]
@@ -174,8 +180,8 @@ const INSIGHTS = {
     "zh": [
       {
         "tag": "highlight",
-        "title": "国际航线 Q1 表现偏强",
-        "body": "Q1 国际航空客运量同比约 <span class=\"num-highlight\">+10.3%～+12.8%</span>（民航局 / 三大航）；国际航班运力相对 2019 仍约 <span class=\"num-highlight\">-9.6%</span>。客运同比已转正，运力相对 2019 仍有缺口，两侧恢复进度并不一致。",
+        "title": "Q1 国际航线仍是偏强对照基",
+        "body": "Q1 国际航空客运量同比约 <span class=\"num-highlight\">+10.3%～+12.8%</span>（民航局 / 三大航），而国际运力相对 2019 仍约 <span class=\"num-highlight\">-9.6%</span>。上述对比均落在 Q1 数据本身：客运同比已转正、运力相对 2019 仍有缺口，说明该季需求修复快于供给补齐。",
         "refs": [
           "quarterly.q1.intlAviationCAAC",
           "quarterly.q1.intlAviationBig3",
@@ -183,41 +189,32 @@ const INSIGHTS = {
         ]
       },
       {
-        "tag": "highlight",
-        "title": "铁路与国内酒店 Q1 整体为正",
-        "body": "Q1 铁路客运同比约 <span class=\"num-highlight\">+5.7%</span>；国内酒店 RevPAR 约 <span class=\"num-highlight\">+4.8%</span>（ADR 约 +3.8%）。两端均录得正增长，其中国内酒店 RevPAR 更多由 ADR 拉动。",
-        "refs": [
-          "quarterly.q1.railway",
-          "quarterly.q1.hotelRevPAR",
-          "quarterly.q1.hotelADR"
-        ]
-      },
-      {
         "tag": "risk",
-        "title": "Q2 指标明显弱于 Q1",
-        "body": "Q2（4–6 月各月平均）国内航空民航局口径约 <span class=\"num-highlight\">-5.2%</span>，低于 Q1 的约 <span class=\"num-highlight\">+5.5%</span>；铁路客运约 <span class=\"num-highlight\">+4.3%</span>，仍为正但低于 Q1。国内航由正转负，是 Q1→Q2 变化里幅度较大的一项。",
+        "title": "Q2 国内航由正转负，摆动逾 10 个百分点",
+        "body": "Q2 国内航空民航局口径约 <span class=\"num-highlight\">-5.2%</span>，相对 Q1 约 <span class=\"num-highlight\">+5.5%</span> 回落逾 10 个百分点；三大航 Q2 约 <span class=\"num-highlight\">-6.0%</span>。与 Q2 月份对齐的监测指向淡季需求偏弱，以及高油价下航司在 5–6 月收缩运力，属于本季内的成本与需求共振。铁路 Q2 约 <span class=\"num-highlight\">+4.6%</span> 仍为正，但难对冲国内航转负。",
         "refs": [
           "quarterly.q2.domAviationCAAC",
           "quarterly.q1.domAviationCAAC",
-          "quarterly.q2.railway",
-          "quarterly.q1.railway"
+          "quarterly.q2.domAviationBig3",
+          "quarterly.q2.railway"
         ]
       },
       {
         "tag": "outlook",
-        "title": "暑期旺季能否扭转 Q2 偏弱开局",
-        "body": "按 Q2 全季均值，国内航已转负、铁路增速低于 Q1。7–8 月旺季数据出来前，还不宜对下半年节奏下强结论。",
+        "title": "Q3 关键看暑运量价能否同时改善",
+        "body": "就 Q2 已落地数据而言：国内航转负、国际运力相对 2019 约 <span class=\"num-highlight\">-14.0%</span>、酒店 RevPAR 约 <span class=\"num-highlight\">+2.0%</span>。Q3 能否修复取决于 7–8 月量价是否同时改善；在季度均值尚未公布前，不宜用个别周度回暖直接外推为 Q3 全面修复。",
         "refs": [
           "quarterly.q2.domAviationCAAC",
-          "quarterly.q2.railway"
+          "quarterly.q2.intlCapacity",
+          "quarterly.q2.hotelRevPAR"
         ]
       }
     ],
     "en": [
       {
         "tag": "highlight",
-        "title": "Intl routes strong in Q1",
-        "body": "Q1 intl air pax about <span class=\"num-highlight\">+10.3%–+12.8%</span> YoY (CAAC / Big3); capacity vs 2019 still about <span class=\"num-highlight\">-9.6%</span>. Pax turned positive YoY while capacity vs 2019 remained below 2019 — recovery timing differed across the two sides.",
+        "title": "Q1 intl routes remain the strong comparison base",
+        "body": "Q1 intl air pax about <span class=\"num-highlight\">+10.3%–+12.8%</span> YoY (CAAC / Big3), while intl capacity vs 2019 still about <span class=\"num-highlight\">-9.6%</span>. All within Q1 itself: pax clearly positive YoY while capacity vs 2019 still lags — demand recovered faster than supply caught up that quarter.",
         "refs": [
           "quarterly.q1.intlAviationCAAC",
           "quarterly.q1.intlAviationBig3",
@@ -225,33 +222,24 @@ const INSIGHTS = {
         ]
       },
       {
-        "tag": "highlight",
-        "title": "Rail and domestic hotels positive in Q1",
-        "body": "Q1 railway pax about <span class=\"num-highlight\">+5.7%</span>; domestic hotel RevPAR about <span class=\"num-highlight\">+4.8%</span> (ADR about +3.8%). Both were positive, with domestic hotel RevPAR more ADR-led.",
-        "refs": [
-          "quarterly.q1.railway",
-          "quarterly.q1.hotelRevPAR",
-          "quarterly.q1.hotelADR"
-        ]
-      },
-      {
         "tag": "risk",
-        "title": "Q2 metrics clearly softer than Q1",
-        "body": "Q2 (Apr–Jun monthly avg) domestic air (CAAC) about <span class=\"num-highlight\">-5.2%</span>, below Q1 about <span class=\"num-highlight\">+5.5%</span>; railway pax about <span class=\"num-highlight\">+4.3%</span>, still positive but below Q1. Domestic air’s swing from positive to negative was one of the larger Q1→Q2 moves.",
+        "title": "Q2 domestic air swung negative by >10pp",
+        "body": "Q2 domestic air (CAAC) about <span class=\"num-highlight\">-5.2%</span>, down more than 10pp from Q1 about <span class=\"num-highlight\">+5.5%</span>; Big3 Q2 about <span class=\"num-highlight\">-6.0%</span>. Q2-aligned monitoring points to soft off-season demand plus capacity cuts under high fuel in May–Jun — a within-quarter cost and demand mix, not noise. Railway Q2 about <span class=\"num-highlight\">+4.6%</span> stayed positive but did not offset domestic air’s swing.",
         "refs": [
           "quarterly.q2.domAviationCAAC",
           "quarterly.q1.domAviationCAAC",
-          "quarterly.q2.railway",
-          "quarterly.q1.railway"
+          "quarterly.q2.domAviationBig3",
+          "quarterly.q2.railway"
         ]
       },
       {
         "tag": "outlook",
-        "title": "Can summer reverse a soft Q2 start",
-        "body": "On full Q2 averages, domestic air is negative and railway growth is below Q1. Before July–August peak-season data arrive, it is still too early to draw firm conclusions on H2 pacing.",
+        "title": "Q3 hinges on summer volume and price together",
+        "body": "On Q2 prints already in hand: domestic air negative, intl capacity vs 2019 about <span class=\"num-highlight\">-14.0%</span>, hotel RevPAR about <span class=\"num-highlight\">+2.0%</span>. Whether Q3 repairs depends on July–August volume and pricing improving together; before quarterly averages are out, don’t extrapolate a few warm weekly prints into a full Q3 recovery.",
         "refs": [
           "quarterly.q2.domAviationCAAC",
-          "quarterly.q2.railway"
+          "quarterly.q2.intlCapacity",
+          "quarterly.q2.hotelRevPAR"
         ]
       }
     ]
