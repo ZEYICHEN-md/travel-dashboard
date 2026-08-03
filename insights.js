@@ -6,7 +6,7 @@
 
 const INSIGHTS = {
   "meta": {
-    "basedOnTravelJsonUpdatedAt": "2026-07-23",
+    "basedOnTravelJsonUpdatedAt": "2026-07-28",
     "confirmedAt": {
       "weekly": "2026-07-23",
       "monthly": "2026-07-23",
