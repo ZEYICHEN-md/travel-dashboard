@@ -9,8 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.5.0/echarts.min.js"
             onerror="var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js';document.head.appendChild(s);"></script>
-    <script src="data.js"></script>
-    <script src="insights.js"></script>
+    <script src="data.js?v=20260803"></script>
+    <script src="insights.js?v=20260803"></script>
     <script src="i18n.js"></script>
     <style>
         :root {
@@ -116,34 +116,84 @@
         .page-hero {
             max-width: 1680px;
             margin: 0 auto;
-            padding: 32px 28px 4px;
+            padding: 24px 28px 8px;
+        }
+        .page-hero-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 28px 32px 24px;
             text-align: center;
+        }
+        .ir-brand {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+        .ir-logo-badge {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: baseline;
+            gap: 3px;
+            padding: 5px 9px 5px 8px;
+            border-radius: 6px;
+            background: linear-gradient(135deg, #2577e3 0%, #1a5fc0 100%);
+            color: #fff;
+            line-height: 1;
+            box-shadow: 0 1px 3px rgba(37, 119, 227, 0.35);
+        }
+        .ir-logo-text {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+        .ir-logo-sub {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            opacity: 0.88;
+        }
+        .ir-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(8, 34, 86, 0.42);
+            line-height: 1;
+        }
+        .ir-dot {
+            margin: 0 0.35em;
+            opacity: 0.55;
         }
         .page-hero h1 {
             font-size: 28px;
             font-weight: 700;
             color: var(--black);
-            margin: 0 0 10px;
+            margin: 0;
             letter-spacing: -0.4px;
-            line-height: 1.25;
+            line-height: 1.3;
         }
-        .page-hero h1::after {
-            content: '';
-            display: block;
-            width: 36px;
+        .page-hero-accent {
+            width: 40px;
             height: 3px;
-            margin: 12px auto 0;
+            margin: 14px auto 16px;
             border-radius: 2px;
             background: var(--blue);
         }
-        .page-meta {
-            max-width: 720px;
-            margin: 0 auto;
-            padding: 0;
+        .page-meta-block {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            align-items: center;
+        }
+        .page-meta-line {
+            margin: 0;
             font-size: 13px;
             color: rgba(8, 34, 86, 0.48);
             line-height: 1.55;
-            text-align: center;
         }
 
         .lang-toggle {
@@ -675,9 +725,29 @@
             }
             .topnav-tabs .tab { padding: 7px 10px; font-size: 12px; }
             .page-hero {
-                padding: 20px 16px 4px;
+                padding: 16px 14px 6px;
+            }
+            .page-hero-card {
+                padding: 22px 18px 18px;
+                border-radius: 10px;
+            }
+            .ir-brand {
+                gap: 8px;
+                margin-bottom: 14px;
+            }
+            .ir-logo-badge {
+                padding: 4px 8px 4px 7px;
+            }
+            .ir-logo-text { font-size: 12px; }
+            .ir-logo-sub { font-size: 9px; }
+            .ir-label {
+                font-size: 10px;
+                letter-spacing: 0.1em;
             }
             .page-hero h1 { font-size: 22px; }
+            .page-hero-accent {
+                margin: 12px auto 14px;
+            }
             .insight-group {
                 grid-template-columns: 1fr;
                 gap: 8px;
@@ -703,8 +773,22 @@
         </div>
     </nav>
     <header class="page-hero">
-        <h1 id="i18n-title">2026年旅游行业数据看板</h1>
-        <p class="page-meta" id="i18n-subtitle">数据口径：同比2025年变化率 | 来源：STR、民航局、三大航、国铁、航班管家、飞常准</p>
+        <div class="page-hero-card">
+            <div class="ir-brand" aria-label="Trip.com Group Investor Relations">
+                <div class="ir-logo-badge" aria-hidden="true">
+                    <span class="ir-logo-text" id="i18n-ir-logo">携程</span>
+                    <span class="ir-logo-sub">IR</span>
+                </div>
+                <span class="ir-label" id="i18n-ir-brand">TRIP.COM GROUP<span class="ir-dot">•</span>INVESTOR RELATIONS</span>
+            </div>
+            <h1 id="i18n-title">2026年旅游行业数据看板</h1>
+            <div class="page-hero-accent" aria-hidden="true"></div>
+            <div class="page-meta-block">
+                <p class="page-meta-line" id="i18n-meta-update">数据更新：2026/07/28</p>
+                <p class="page-meta-line" id="i18n-meta-detail">最新数据周：7/19-7/25 · 同比2025年（国际航班运力为同比2019年）</p>
+                <p class="page-meta-line" id="i18n-meta-sources">来源：STR、民航局、三大航、国铁、航班管家、飞常准</p>
+            </div>
+        </div>
     </header>
 
     <div class="container">
