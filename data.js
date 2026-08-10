@@ -404,7 +404,7 @@ const DATA = {
     }
   },
   "meta": {
-    "dataUpdate": "2026-07-28",
+    "dataUpdate": "2026-08-01",
     "dataSource": "STR、民航局、三大航、国铁、航班管家、飞常准",
     "compareBase": "同比2025年（国际航班运力为同比2019年）",
     "sourceExcel": "国内行业数据_0810.xlsx"
