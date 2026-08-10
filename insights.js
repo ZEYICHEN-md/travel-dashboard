@@ -13,9 +13,9 @@ const INSIGHTS = {
       "quarterly": "2026-08-04"
     },
     "stale": {
-      "weekly": false,
-      "monthly": false,
-      "quarterly": false
+      "weekly": true,
+      "monthly": true,
+      "quarterly": true
     }
   },
   "weekly": {

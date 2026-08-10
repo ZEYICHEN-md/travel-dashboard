@@ -4,7 +4,11 @@ const I18N = {
   zh: {
     pageTitle: '2026年旅游行业数据看板',
     title: '2026年旅游行业数据看板',
-    subtitle: '数据口径：同比2025年变化率 | 来源：STR、民航局、三大航、国铁、航班管家、飞常准',
+    irBrand: 'TRIP.COM GROUP•INVESTOR RELATIONS',
+    irLogo: '携程',
+    metaUpdate: '数据更新：{date}',
+    metaDetail: '最新数据周：{week} · {compareBase}',
+    metaSources: '来源：{sources}',
     downloadAll: '下载全部图表',
     downloadImg: '下载图片',
     tabWeekly: '周度趋势',
@@ -69,7 +73,11 @@ const I18N = {
   en: {
     pageTitle: '2026 Travel Industry Dashboard',
     title: '2026 Travel Industry Dashboard',
-    subtitle: 'YoY vs 2025 | Sources: STR, CAAC, Big3 airlines, China Railway, VariFlight, VeryZhun',
+    irBrand: 'TRIP.COM GROUP•INVESTOR RELATIONS',
+    irLogo: 'Trip',
+    metaUpdate: 'Data as of: {date}',
+    metaDetail: 'Latest week: {week} · {compareBase}',
+    metaSources: 'Sources: {sources}',
     downloadAll: 'Download all charts',
     downloadImg: 'Download',
     tabWeekly: 'Weekly',
@@ -290,11 +298,56 @@ function renderInsights() {
   }).join('');
 }
 
+function formatMetaDate(iso) {
+  if (!iso) return '—';
+  const parts = String(iso).split('-');
+  if (parts.length !== 3) return iso;
+  return `${parts[0]}/${parts[1]}/${parts[2]}`;
+}
+
+function latestDataWeek() {
+  if (typeof DATA === 'undefined' || !DATA.weekly || !DATA.weekly.weeks || !DATA.weekly.weeks.length) return '—';
+  return DATA.weekly.weeks[DATA.weekly.weeks.length - 1];
+}
+
+function fillTemplate(str, vars) {
+  return String(str).replace(/\{(\w+)\}/g, (_, k) => (vars[k] != null ? vars[k] : ''));
+}
+
+function applyHeroMeta() {
+  const meta = (typeof DATA !== 'undefined' && DATA && DATA.meta) ? DATA.meta : {};
+  const vars = {
+    date: formatMetaDate(meta.dataUpdate),
+    week: latestDataWeek(),
+    compareBase: meta.compareBase || (currentLang === 'zh' ? '同比2025年' : 'YoY vs 2025'),
+    sources: meta.dataSource || '',
+  };
+  const updateEl = document.getElementById('i18n-meta-update');
+  const detailEl = document.getElementById('i18n-meta-detail');
+  const sourcesEl = document.getElementById('i18n-meta-sources');
+  if (updateEl) updateEl.textContent = fillTemplate(t('metaUpdate'), vars);
+  if (detailEl) detailEl.textContent = fillTemplate(t('metaDetail'), vars);
+  if (sourcesEl) sourcesEl.textContent = fillTemplate(t('metaSources'), vars);
+}
+
+function applyIrBrand() {
+  const logoEl = document.getElementById('i18n-ir-logo');
+  if (logoEl) logoEl.textContent = t('irLogo');
+  const el = document.getElementById('i18n-ir-brand');
+  if (!el) return;
+  const raw = t('irBrand');
+  const parts = raw.split('•');
+  if (parts.length === 2) {
+    el.innerHTML = `${parts[0].trim()}<span class="ir-dot">•</span>${parts[1].trim()}`;
+  } else {
+    el.textContent = raw;
+  }
+}
+
 function applyStaticI18n() {
   document.title = t('pageTitle');
   const map = {
     'i18n-title': 'title',
-    'i18n-subtitle': 'subtitle',
     'i18n-download-all': 'downloadAll',
     'i18n-tab-weekly': 'tabWeekly',
     'i18n-tab-monthly': 'tabMonthly',
@@ -327,6 +380,8 @@ function applyStaticI18n() {
     const el = document.getElementById(id);
     if (el) el.textContent = t(map[id]);
   });
+  applyIrBrand();
+  applyHeroMeta();
   document.querySelectorAll('.dl-text').forEach(el => { el.textContent = t('downloadImg'); });
   const langBtn = document.getElementById('lang-toggle');
   if (langBtn) langBtn.textContent = t('langBtn');
