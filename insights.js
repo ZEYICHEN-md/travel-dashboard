@@ -1,7 +1,7 @@
 // ============================================================
-// 旅游看板洞察投影 — 请勿手改权威副本
-// 权威：data_source/canonical/travel-insights.json
-// 重新生成：node scripts/generate_insights_js.js
+// 旅游看板洞察投影 — 请勿手改
+// 权威：data/canonical/travel-insights.json
+// 重新生成：ir industry generate-dashboard
 // ============================================================
 
 const INSIGHTS = {
@@ -13,9 +13,9 @@ const INSIGHTS = {
       "quarterly": "2026-08-17"
     },
     "stale": {
-      "weekly": false,
-      "monthly": false,
-      "quarterly": false
+      "weekly": true,
+      "monthly": true,
+      "quarterly": true
     }
   },
   "weekly": {
